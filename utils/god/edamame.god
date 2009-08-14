@@ -9,7 +9,7 @@ FAITHFUL = [
   [BeanstalkdGod, { :port => 11300 }],
   [BeanstalkdGod, { :port => 11301 }],
   
-  [TyrantGod,     { :port => 11200 }],
+  [TyrantGod,     { :port => 11200, :db_dirname => '/data/distdb', :db_name => 'foo_queue.tct' }],
 ]
 
 FAITHFUL.each do |klass, config|

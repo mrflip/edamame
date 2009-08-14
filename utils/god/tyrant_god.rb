@@ -46,7 +46,7 @@ class TyrantGod < GodProcess
   end
   
   def dbname
-    basename = config[:db_basename] || (handle+'.tct')
+    basename = config[:db_name] || (handle+'.tct')
     File.join(config[:db_dirname], basename)
   end
     

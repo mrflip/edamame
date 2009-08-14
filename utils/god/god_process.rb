@@ -9,8 +9,8 @@ class GodProcess
     :process_log_dir    => '/var/log/god',
 
     :start_grace_time   => 20.seconds,
-    :default_interval   => 1.minute,
-    :start_interval     => 1.minute,
+    :default_interval   => 5.minutes,
+    :start_interval     => 5.minutes,
     :mem_usage_interval => 10.minutes,
     :cpu_usage_interval => 10.minutes,
   }
