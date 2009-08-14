@@ -9,18 +9,18 @@ h2. Requirements
 For the beanstalk part, You'll need libevent >= 1.4, beanstalkd >= 1.3, and beanstalk-client
 
 <pre>
-    cd /usr/local/src/
-    pkg=libevent-1.4.11-stable ;( wget -nc http://monkey.org/~provos/${pkg}.tar.gz     && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local                         && make -j2 && sudo make install )
-    pkg=beanstalkd-1.3         ;( wget -nc http://xph.us/dist/beanstalkd/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local --with-event=/usr/local && make -j2 && sudo make install )
-    sudo gem install beanstalk-client
+    cd /usr/local/src/ ;
+    pkg=libevent-1.4.11-stable ;( wget -nc http://monkey.org/~provos/${pkg}.tar.gz     && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local                         && make -j2 && sudo make install ) ;
+    pkg=beanstalkd-1.3         ;( wget -nc http://xph.us/dist/beanstalkd/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local --with-event=/usr/local && make -j2 && sudo make install ) ;
+    sudo gem install beanstalk-client ;
 </pre>
     
 For the tokyotyrant part, you'll need tokyocabinet, tokyotyrant and their corresponding ruby libraries:
 
 <pre>
     ttbase=http://downloads.sourceforge.net/sourceforge/tokyocabinet
-    pkg=tokyocabinet-1.4.29    ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install )
-    pkg=tokyotyrant-1.1.30     ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install )
-    pkg=tokyocabinet-ruby-1.27 ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ruby extconf.rb                 && make -j2 && sudo make install )
+    pkg=tokyocabinet-1.4.29    ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
+    pkg=tokyotyrant-1.1.30     ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
+    pkg=tokyocabinet-ruby-1.27 ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ruby extconf.rb                 && make -j2 && sudo make install ) ;
     pkg=tokyotyrant-ruby-1.10  ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && sudo ruby install.rb ) ;
 </pre>

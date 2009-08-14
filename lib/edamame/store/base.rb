@@ -1,6 +1,7 @@
-module Monkeyshines
+# require 'monkeyshines/utils/factory_module'
+module Edamame
   module Store
-    class KeyStore < Monkeyshines::Store::Base
+    class KeyStore
       # The actual backing store; should respond to #set and #get methods
       attr_accessor :db
 
@@ -41,10 +42,7 @@ module Monkeyshines
       #
       # obvs only works when there's just one store
       #
-      def self.new_from_command_line cmdline_opts, default_opts={}
-        options = default_opts.merge(cmdline_opts)
-        store = self.new(options[:store_db])
-        store
+      def self.create type, config
       end
     end
   end

@@ -1,1 +1,2 @@
-require 'queue/beanstalk'
+require 'edamame/queue/base'
+require 'edamame/queue/beanstalk'
