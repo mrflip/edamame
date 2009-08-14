@@ -5,12 +5,6 @@ require 'beanstalkd_god'
 require 'tyrant_god'
 require 'god_site_config'
 
-require 'yaml'
-
-SITE_CONFIG_FILE = ENV['HOME']+'/.monkeyshines'
-SITE_CONFIG = YAML.load(File.open(SITE_CONFIG_FILE))
-God.setup_email SITE_CONFIG[:email]
-
 FAITHFUL = [
   [BeanstalkdGod, { :port => 11300 }],
   [BeanstalkdGod, { :port => 11301 }],
