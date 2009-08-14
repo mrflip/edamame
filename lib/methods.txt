@@ -1,0 +1,91 @@
+== Connection == 
+
+connection.rb:  	def initialize(addr, default_tube=nil)
+connection.rb:  	def connect
+connection.rb:  	def close
+
+connection.rb:  	def put(body, pri=65536, delay=0, ttr=120)
+connection.rb:  	def yput(obj, pri=65536, delay=0, ttr=120)
+connection.rb:  	def reserve(timeout=nil)    
+connection.rb:  	def delete(id)
+connection.rb:  	def release(id, pri, delay)
+connection.rb:  	def bury(id, pri)
+
+connection.rb:  	def use(tube)
+connection.rb:  	def watch(tube)
+connection.rb:  	def ignore(tube)
+
+connection.rb:  	def peek_job(id)
+connection.rb:  	def peek_ready()
+connection.rb:  	def peek_delayed()
+connection.rb:  	def peek_buried()
+
+connection.rb:  	def stats()
+connection.rb:  	def job_stats(id)
+
+connection.rb:  	def stats_tube(tube)
+connection.rb:  	def list_tubes()
+connection.rb:  	def list_tube_used()
+connection.rb:  	def list_tubes_watched(cached=false)
+
+
+== Pool ==
+
+connection.rb:  	def initialize(addrs, 	default_tube=nil)
+connection.rb:  	def connect()
+connection.rb:  	def open_connections()
+connection.rb:  	def last_server
+connection.rb:  	def put(body, pri=65536, delay=0, ttr=120)
+connection.rb:  	def yput(obj, pri=65536, delay=0, ttr=120)
+connection.rb:  	def reserve(timeout=nil)
+connection.rb:  	def use(tube)
+connection.rb:  	def watch(tube)
+connection.rb:  	def ignore(tube)
+connection.rb:  	def raw_stats()
+connection.rb:  	def stats()
+connection.rb:  	def raw_stats_tube(tube)
+connection.rb:  	def stats_tube(tube)
+connection.rb:  	def list_tubes()
+connection.rb:  	def list_tube_used()
+connection.rb:  	def list_tubes_watched(*args)
+connection.rb:  	def remove(conn)
+connection.rb:  	def close
+connection.rb:  	def peek_ready()
+connection.rb:  	def peek_delayed()
+connection.rb:  	def peek_buried()
+connection.rb:  	def peek_job(id)
+connection.rb:  	def call_wrap(c, *args)
+connection.rb:  	def retry_wrap(*args)
+connection.rb:  	def send_to_each_conn_first_res(*args)
+connection.rb:  	def send_to_rand_conn(*args)
+connection.rb:  	def send_to_all_conns(*args)
+connection.rb:  	def pick_connection()
+connection.rb:  	def make_hash(pairs)
+connection.rb:  	def map_hash(h)
+connection.rb:  	def compact_hash(hash)
+connection.rb:  	def sum_hashes(hs)
+connection.rb:  	def combine_stats(k, a, b)
+
+
+== Job ==
+
+job.rb:  		def [](name)
+job.rb:  		def []=(name, val)
+job.rb:  		def ybody()
+job.rb:  		def initialize(conn, id, body)
+job.rb:  		def delete()
+job.rb:  		def put_back(pri=self.pri, delay=0, ttr=self.ttr)
+job.rb:  		def release(newpri=pri, delay=0)
+job.rb:  		def bury(newpri=pri)
+job.rb:  		def stats()
+job.rb:  		def timeouts() stats['timeouts'] end
+job.rb:  		def time_left() stats['time-left'] end
+job.rb:  		def age() stats['age'] end
+job.rb:  		def state() stats['state'] end
+job.rb:  		def delay() stats['delay'] end
+job.rb:  		def pri() stats['pri'] end
+job.rb:  		def ttr() stats['ttr'] end
+job.rb:  		def server()
+job.rb:  		def decay(d=([1, delay].max * 1.3).ceil)
+job.rb:  		def to_s
+job.rb:  		def inspect

@@ -44,12 +44,12 @@ class TyrantGod < GodProcess
   def self.kind
     :ttyrant
   end
-  
+
   def dbname
     basename = config[:db_name] || (handle+'.tct')
     File.join(config[:db_dirname], basename)
   end
-    
+
   def start_command
     [
       config[:ttserver_exe],

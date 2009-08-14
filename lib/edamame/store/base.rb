@@ -1,7 +1,7 @@
 # require 'monkeyshines/utils/factory_module'
 module Edamame
   module Store
-    class KeyStore
+    class Base
       # The actual backing store; should respond to #set and #get methods
       attr_accessor :db
 

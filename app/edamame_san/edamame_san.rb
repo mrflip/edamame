@@ -4,7 +4,6 @@ require 'rubygems'
 require 'sinatra/base'
 require 'haml'
 require 'json'
-require 'extlib/blank'
 require 'edamame'
 
 #
@@ -26,9 +25,10 @@ class EdamameSan < Sinatra::Base
   #   Log.info "Loaded config file with #{@@config.length} things"
   # end
 
-  # before do
-  #   next if request.path_info =~ /ping$/
-  # end
+  before do
+    next if request.path_info =~ /ping$/
+    @store = Edamame::Store::TyrantStore.new ':11200'
+  end
 
   #
   # Front Page
