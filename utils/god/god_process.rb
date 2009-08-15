@@ -1,7 +1,8 @@
 class GodProcess
   CONFIG_DEFAULTS = {
     :monitor_group      => nil,
-    :user               => nil,
+    :uid                => nil,
+    :gid                => nil,
     :start_notify       => nil,
     :restart_notify     => nil,
     :flapping_notify    => nil,
@@ -9,10 +10,11 @@ class GodProcess
     :process_log_dir    => '/var/log/god',
 
     :start_grace_time   => 20.seconds,
+    :restart_grace_time => nil,         # start_grace_time+2 if nil
     :default_interval   => 5.minutes,
     :start_interval     => 5.minutes,
-    :mem_usage_interval => 10.minutes,
-    :cpu_usage_interval => 10.minutes,
+    :mem_usage_interval => 20.minutes,
+    :cpu_usage_interval => 20.minutes,
   }
 
   attr_accessor :config
@@ -68,14 +70,15 @@ class GodProcess
 
   def config_watcher watcher
     watcher.name             = self.handle
-    watcher.group            = config[:monitor_group] if config[:monitor_group]
+    watcher.start            = start_command
+    watcher.stop             = stop_command            if stop_command
+    watcher.restart          = restart_command         if restart_command
+    watcher.group            = config[:monitor_group]  if config[:monitor_group]
+    watcher.uid              = config[:uid]            if config[:uid]
+    watcher.gid              = config[:gid]            if config[:gid]
     watcher.interval         = config[:default_interval]
     watcher.start_grace      = config[:start_grace_time]
     watcher.restart_grace    = config[:restart_grace_time] || (config[:start_grace_time] + 2.seconds)
-    watcher.start            = start_command
-    watcher.stop             = stop_command    if stop_command
-    watcher.restart          = restart_command if restart_command
-    watcher.uid              = config[:user] if config[:user]
     watcher.behavior(:clean_pid_file)
   end
 

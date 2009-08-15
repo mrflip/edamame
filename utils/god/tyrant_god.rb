@@ -34,8 +34,9 @@ class TyrantGod < GodProcess
     :max_cpu_usage  => 50.percent,
     :max_mem_usage  => 150.megabytes,
     :monitor_group  => 'tyrants',
-    :ttserver_exe   => '/usr/local/bin/ttserver',
+    :server_exe     => '/usr/local/bin/ttserver',
   }
+
   def initialize *args
     super *args
     self.config = TyrantGod::CONFIG_DEFAULTS.compact.merge(self.config)
@@ -52,7 +53,7 @@ class TyrantGod < GodProcess
 
   def start_command
     [
-      config[:ttserver_exe],
+      config[:server_exe],
       "-host #{config[:listen_on]}",
       "-port #{config[:port]}",
       "-log  #{process_log_file}",

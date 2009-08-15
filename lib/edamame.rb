@@ -14,23 +14,18 @@ module Edamame
         reschedule job
       end
     end
-
     def log job
     end
-
     def reschedule job
       release job
     end
-
   end
-
 
   class PersistentQueue
     def initialize options={}
       self.store = Edamame::Store.create options[:store]
       self.queue = Edamame::Queue.create options[:pool]
     end
-
     def put job
       store.put job.key, job
       queue.put job.to_hash, job.priority, job.delay, job.ttr
@@ -39,7 +34,7 @@ module Edamame
       put job
     end
     def reserve timeout=nil
-      hsh = queue.reserve timeout or return
+      hsh = queue.reserve(timeout) or return
       Job.from_hash hsh
     end
     def delete job
@@ -58,9 +53,7 @@ module Edamame
     def each *args, &block
       store.each *args, &block
     end
-
   end
-
 
   #
   #

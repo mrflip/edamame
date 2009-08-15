@@ -2,7 +2,7 @@
   # environment:           production
   # chdir:                 /slice/www/oauth_reflector/current
   address:               127.0.0.1
-  port:                  12000
+  port:                  11211
   # user:                  www-data
   # group:                 www-data
   # pid:                   /slice/www/oauth_reflector/current/tmp/pids/thin.pid

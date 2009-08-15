@@ -1,3 +1,7 @@
+See also:
+
+  http://github.com/kr/beanstalkd/blob/master/doc/protocol.txt
+
 == Connection == 
 
 connection.rb:  	def initialize(addr, default_tube=nil)

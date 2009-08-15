@@ -8,7 +8,7 @@ require 'edamame'
 
 #
 # run with
-#   shotgun --port=12000 --server=thin ./config.ru
+#   shotgun --port=11211 --server=thin ./config.ru
 #
 class EdamameSan < Sinatra::Base
   # Server setup
@@ -27,13 +27,29 @@ class EdamameSan < Sinatra::Base
 
   before do
     next if request.path_info =~ /ping$/
-    @store = Edamame::Store::TyrantStore.new ':11200'
+    @store = Edamame::Store::TyrantStore.new ':11219'
   end
 
   #
   # Front Page
   #
   get "/" do
+    haml :root
+  end
+
+  get "/load" do
+    @dest_store = Edamame::Store::TyrantStore.new ':11212'
+    iter = 0
+    @store.each_as(Wuclan::Domains::Twitter::Scrape::TwitterSearchJob) do |key, obj|
+      edamame_job = Edamame::Job.new(
+        obj.priority, 'twitter_search_scrape', 120,
+        1 / obj.prev_rate.to_f,
+        Time.now, true, obj.prev_items.to_i/1000, 0,
+        obj# .to_hash.to_yaml
+        )
+      @dest_store.set edamame_job.body[:query_term], edamame_job.body
+      break if ((iter+=1) > 10)
+    end
     haml :root
   end
 
