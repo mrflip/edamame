@@ -1,0 +1,35 @@
+%style{ :type => 'text/css' }
+  @import url('/stylesheets/layout.css');
+
+%p
+
+  Jobs in the edamame job store:
+
+
+%table
+  %tr
+    %th query_term
+    %th priority
+    %th prev_items
+    %th prev_rate
+    %th prev_span_min
+    %th prev_span_max
+  - @dest_store.each_as(Wuclan::Domains::Twitter::Scrape::TwitterSearchJob) do |key, obj|
+    %tr
+      -# %td=h key.inspect
+      %td=h obj[:query_term]
+      %td=h obj[:priority]
+      %td=h obj[:prev_items]
+      %td=h obj[:prev_rate]
+      %td=h obj[:prev_span_min]
+      %td=h obj[:prev_span_max]
+
+            
+            
+            
+            
+            
+            
+      
+
+  
