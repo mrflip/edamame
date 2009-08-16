@@ -32,7 +32,6 @@ connection.rb:  	def list_tubes()
 connection.rb:  	def list_tube_used()
 connection.rb:  	def list_tubes_watched(cached=false)
 
-
 == Pool ==
 
 connection.rb:  	def initialize(addrs, 	default_tube=nil)

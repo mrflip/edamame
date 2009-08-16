@@ -14,7 +14,7 @@
     %th prev_rate
     %th prev_span_min
     %th prev_span_max
-  - @dest_store.each_as(Wuclan::Domains::Twitter::Scrape::TwitterSearchJob) do |key, obj|
+  - @store.each_as(Wuclan::Domains::Twitter::Scrape::TwitterSearchJob) do |key, obj|
     %tr
       -# %td=h key.inspect
       %td=h obj[:query_term]
@@ -23,13 +23,3 @@
       %td=h obj[:prev_rate]
       %td=h obj[:prev_span_min]
       %td=h obj[:prev_span_max]
-
-            
-            
-            
-            
-            
-            
-      
-
-  

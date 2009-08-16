@@ -16,42 +16,28 @@ module Edamame
         :max_resched_delay => 60*60*24, # one day
         :priority          => 65536,    # default job queue priority
         :time_to_run       => 60*5,     # 5 minutes to complete a job or assume dead
+        :beanstalkd_uris   => ['localhost:11300']
       }
-      DEFAULT_BEANSTALK_POOL = ['localhost:11300']
-      attr_accessor :beanstalk_pool, :items_goal, :min_resched_delay, :max_resched_delay, :config
+
+      attr_accessor :beanstalkd_uris, :items_goal, :min_resched_delay, :max_resched_delay, :config
 
       #
       # beanstalk_pool -- specify nil to use the default single-node ['localhost:11300'] pool
       #
       def initialize new_config={}
         self.config            = DEFAULT_PARAMS.compact.merge new_config
-        self.beanstalk_pool    = config[:beanstalk_pool]
+        self.beanstalkd_uris   = config[:beanstalkd_uris]
         # self.min_resched_delay = config[:min_resched_delay]
         # self.max_resched_delay = config[:max_resched_delay]
         # self.items_goal        = config[:items_goal]
       end
 
-      #
-      # Request Stream
-      #
-      def each &block
-        loop do
-          qjob = reserve_job! or next
-          scrape_job = scrape_job_from_qjob(qjob)
-          # Run the scrape scrape_job
-          yield scrape_job
-          # reschedule for later
-          reschedule qjob, scrape_job
-        end
-      end
-
       # The beanstalk pool which acts as job queue
       def job_queue
-        @job_queue ||= Beanstalk::Pool.new(beanstalk_pool, config[:beanstalk_tube])
+        @job_queue ||= Beanstalk::Pool.new(beanstalkd_uris, config[:beanstalk_tube])
       end
-
       # Close the job queue
-      def finish
+      def close
         @job_queue.close if @job_queue
         @job_queue = nil
       end
@@ -66,6 +52,33 @@ module Edamame
         [:reserved, :ready, :buried, :delayed].inject(0){|sum,type| sum += stats["current-jobs-#{type}"]}
       end
 
+      # Take the next (highest priority, delay met) job.
+      # Set timeout (default is 10s)
+      # Returns nil on error or timeout. Interrupt error passes through
+      def reserve timeout=10
+        begin  qjob = job_queue.reserve(timeout)
+        rescue Beanstalk::TimedOut => e ; warn e.to_s ; sleep 0.4 ; return ;
+        rescue StandardError => e       ; warn e.to_s ; sleep 1   ; return ; end
+        qjob
+      end
+
+      def put(*args)   job_queue.put     *args  ; end
+      def delete(job)  job_queue.delete  job.id ; end
+      def release(job) job_queue.release job.id, job.priority, job.delay ; end
+
+      # #
+      # # Request Stream
+      # #
+      # def each &block
+      #   loop do
+      #     qjob = reserve_job! or next
+      #     scrape_job = scrape_job_from_qjob(qjob)
+      #     # Run the scrape scrape_job
+      #     yield scrape_job
+      #     # reschedule for later
+      #     reschedule qjob, scrape_job
+      #   end
+      # end
     end # class
   end
 end

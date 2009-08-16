@@ -15,7 +15,7 @@ require 'god_site_config'
 
 FAITHFUL = [
   [BeanstalkdGod, { :port => 11210 }],
-  [SinatraGod,    { :port => 11211, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
+  #  [SinatraGod,    { :port => 11211, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
   [TyrantGod,     { :port => 11212, :db_dirname => '/data/distdb', :db_name => 'flat_delay_queue.tct' }],
   [TyrantGod,     { :port => 11219, :db_dirname => '/data/distdb', :db_name => 'foo_queue.tct' }],
 ]

@@ -28,6 +28,7 @@ class EdamameSan < Sinatra::Base
   before do
     next if request.path_info =~ /ping$/
     @store = Edamame::Store::TyrantStore.new ':11219'
+    puts 'before!'
   end
 
   #
@@ -42,24 +43,29 @@ class EdamameSan < Sinatra::Base
     iter = 0
     @store.each_as(Wuclan::Domains::Twitter::Scrape::TwitterSearchJob) do |key, obj|
       edamame_job = Edamame::Job.new(
-        obj.priority, 'twitter_search_scrape', 120,
-        1 / obj.prev_rate.to_f,
-        Time.now, true, obj.prev_items.to_i/1000, 0,
-        obj# .to_hash.to_yaml
+        'twitter_search_scrape', 0, obj.priority, 120,
+        1, obj.prev_items.to_i/1000, 0, Time.now.to_f,
+        {
+          :type          => 'Every',
+          :prev_rate     => (1 / obj.prev_rate.to_f),
+          :prev_items    => obj.prev_items,
+          :prev_span_min => obj.prev_span_min,
+          :prev_span_max => obj.prev_span_max
+        },
+        {  'query_term' => obj.query_term }
         )
-      @dest_store.set edamame_job.body[:query_term], edamame_job.body
+      p edamame_job.to_hash
+      @dest_store.set obj.query_term, edamame_job
       break if ((iter+=1) > 10)
     end
-    haml :root
+    haml :load
   end
 
-  puts "hi!"
+  private
 
-  # private
-  #
-  # def inspection *args
-  #   str = args.map{|thing| thing.inspect }.join("\n")
-  #   Log.info str
-  #   '<pre>'+h(str)+'</pre>'
-  # end
+  def inspection *args
+    str = args.map{|thing| thing.inspect }.join("\n")
+    Log.info str
+    '<pre>'+h(str)+'</pre>'
+  end
 end

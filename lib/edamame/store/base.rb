@@ -5,6 +5,9 @@ module Edamame
       # The actual backing store; should respond to #set and #get methods
       attr_accessor :db
 
+      def initialize options
+      end
+
       #
       # Executes block once for each element in the whole DB, in whatever order
       # the DB thinks you should see it.
@@ -24,18 +27,28 @@ module Edamame
         end
       end
 
-
-      # Save the value into the database
-      def set(key, val)
-        return unless val
-        db[key] = val
+      def each_as klass, &block
+        self.each do |key, hsh|
+          yield [key, klass.from_hash(hsh)]
+        end
       end
 
-      alias_method :save, :set
-      def get(key)      db[key]  end
-      def [](key)       db[key]  end
-      def close()       db.close end
-      def size()        db.size  end
+      # Delegate to store
+      def set(key, val)
+        return unless val
+        db.put key, val.to_hash.compact
+      end
+      def save obj
+        return unless obj
+        db.put obj.key, obj.to_hash.compact
+      end
+
+      def get(key)      db[key]         end
+      def put(key, val) db.put key, val end
+      def [](key)       db[key]         end
+      def close()       db.close        end
+      def size()        db.size         end
+      def delete(key)   db.delete(key)  end
 
       #
       # Load from standard command-line options
