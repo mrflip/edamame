@@ -5,28 +5,31 @@ require 'json'
 require 'edamame'
 
 pq = Edamame::PersistentQueue.new(
-  :store => { :type => 'TyrantStore', :uri => ':11212'},
-  :queue => { :type => 'BeanstalkQueue', :beanstalkd_uris => ['localhost:11210'] }
+  :store => { :type => 'TyrantStore',    :uri => ':11212'},
+  :queue => { :type => 'BeanstalkQueue', :uris => ['localhost:11210'] }
   )
 
 pq.store.each do |key, val|
-  puts "removing #{key}"
+  puts "db: removing #{key}"
+  # job = Edamame::Job.from_hash val
+  # p [job.obj, job.scheduling, job.priority, job.delay, job.ttr]
   pq.store.delete key
 end
-pq.hoard.each do |job|
-  puts job.body
+pq.send(:hoard) do |job|
+  puts "q: removing #{job.key}"
+  p [job.obj, job.scheduling, job.priority, job.delay, job.ttr]
 end
 
+include Edamame::Scheduling
 [
-['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=>12}, body={"query_term"=>"night"}],
-['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=> 7}, body={"query_term"=>"day"}],
-['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=>15}, body={"query_term"=>"hot"}],
-# ['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=>9}, body={"query_term"=>"cold"}],
-# ['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=>3}, body={"query_term"=>"hate"}],
-# ['test', "0", "65536", "120", "1", "10", "0", "20090814012345", {"type"=>"Every", "prev_rate"=>4}, body={"query_term"=>"love"}],
+['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(3),  {:key=>"night"}],
+['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(7),  {:key=>"day"  }],
+['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(15), {:key=>"hot"  }],
 ].each do |args|
   job = Edamame::Job.new *args
   pq.store.set job.key, job
+  p job
+  p pq.get job.key
 end
 
 pq.load

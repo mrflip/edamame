@@ -3,76 +3,107 @@ module Edamame
   #
   # id, name, body, timeouts, time-left, age, state, delay, pri, ttr
   #
-  Job = Struct.new(
-    :tube, :id, :priority, :ttr,
-    :active, :runs, :failures, :prev_run_at,
-    :scheduling, # :prev_rate, :prev_items, :prev_span_min, :prev_span_max,
-    :body
-    )
-  Job.class_eval do
-    attr_accessor :qjob
-    def initialize *args
-      super *args
-      if self.body.is_a?(String) then self.body = JSON.load(self.body) rescue nil ; end
-      if self.scheduling.is_a?(String) then self.scheduling = JSON.load(self.scheduling) rescue nil ; end
+  #
+  # * A job, pulled from the queue: it is connected to its beanstalk presence
+  #   body contains
+  #   ** obj
+  #   ** scheduling
+  #   ** stats
+  #
+  # * A DB job
+  #   body contains
+  #   ** tube, priority, ttr, state
+  #   ** obj
+  #   ** scheduling
+  #   ** stats
+
+  Beanstalk::Job.class_eval do
+    def scheduling
+      @scheduling ||= Edamame::Scheduling.from_hash ybody['scheduling']
     end
-    def to_hash
-      hsh = super.to_hash
-      hsh['body'] = self.body.to_json
-      hsh['scheduling'] = self.scheduling.to_json
+
+    def obj
+      ybody['obj']
+    end
+
+    def key
+      [tube, obj[:key]].join('-')
+    end
+
+    def priority
+      pri
+    end
+
+    def tube
+      stats['tube']
+    end
+
+    def to_hash flatten=true
+      hsh =       {
+        "tube"       => tube,
+        "priority"   => priority,
+        "ttr"        => ttr,
+        "state"      => state,
+        "stats"      => stats.to_hash,
+        "scheduling" => scheduling.to_hash.merge('type'=>scheduling.class.to_s.gsub(/Edamame::Scheduling::/,'')),
+        'key'        => key,
+        "obj"        => obj.to_hash,
+      }
+      if flatten
+        hsh["scheduling"] = hsh['scheduling'].to_yaml
+        hsh["stats"]      = hsh['stats'].to_yaml
+        hsh["obj"]        = hsh['obj'].to_yaml
+      end
       hsh
     end
-    def to_flat
-      flat = to_a
-      flat[-2] = scheduling.to_json
-      flat[-1] = body.to_json
-      flat
+  end
+
+  Job = Struct.new(
+    :tube, :priority, :ttr, :state,
+    :stats, :scheduling, :obj
+    )
+
+  Job.class_eval do
+    # attr_accessor :runs, :failures, :prev_run_at
+    def initialize *args
+      super *args
+      [:priority, :ttr, :state].each{|k| self[k] = self[k].to_i }
+      if self.stats.is_a?(String)      then self.stats      = YAML.load(self.stats)      rescue nil ; end
+      case self.scheduling
+      when String
+        scheduling_hash = YAML.load(self.scheduling) rescue nil
+        self.scheduling = Scheduling.from_hash(scheduling_hash) if scheduling_hash
+      when Hash
+        self.scheduling = Scheduling.from_hash(scheduling)
+      end
+      if self.obj.is_a?(String)        then self.obj        = YAML.load(self.obj)        rescue nil ; end
     end
-    def key
-      [self.class.to_s, tube, query_term].join("-")
-    end
-    def query_term
-      body['query_term']
-    end
-    def delay
-      scheduling['prev_rate']
-    end
-    def to_s
-      [priority, tube, ttr, scheduling, prev_run_at, active, runs, failures, body].inspect
-    end
+
+    # Override this for rescheduling
     def update!
     end
 
-    # def initialize priority, tube, ttr, scheduling, prev_run_at, active, runs, failures, body
-    #   self.priority    = priority
-    #   self.tube        = tube
-    #   self.ttr         = ttr
-    #   self.scheduling  = scheduling
-    #   self.prev_run_at = prev_run_at
-    #   self.active      = active
-    #   self.runs        = runs
-    #   self.failures    = failures
-    #   self.body        = body
-    # end
+    def delay
+      scheduling.delay
+    end
 
-    # {"prev_span_min"=>"2667196308", "priority"=>"100", "prev_rate"=>"0.0109902931357164", "query_term"=>"metallica", "prev_span_max"=>"3277045439", "prev_items"=>"28230"}
-    # attr_accessor :
-    # def delete
-    # end
-    # def put_back
-    # end
-    # def release
-    # end
-    # def bury
-    # end
-    # def touch
-    # end
-  end
+    def key
+      [tube, obj[:key]].join('-')
+    end
 
-  module Scheduling
-    Every = Struct.new(:period)
-    At    = Struct.new(:time)
-    Once  = Struct.new(:dummy)
-    Rescheduling = Struct.new( :period, :prev_items, :goal_items, :total_items )
+    def to_hash flatten=true
+      hsh = super()
+      hsh["scheduling"] = scheduling.to_hash.merge('type'=>scheduling.class.to_s.gsub(/Edamame::Scheduling::/,''))
+      hsh["stats"]      = stats.to_hash
+      hsh["obj"]        = obj.to_hash
+      if flatten
+        hsh["scheduling"] = hsh['scheduling'].to_yaml
+        hsh["stats"]      = hsh['stats'].to_yaml
+        hsh["obj"]        = hsh['obj'].to_yaml
+      end
+      hsh
+    end
   end
 end
+
+

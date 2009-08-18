@@ -31,7 +31,10 @@ module Edamame
         db.putnr key, val if val
       end
 
-      def size()        db.rnum  end
+      def size()
+        db.rnum
+      end
+
       def include? *args
         db.has_key? *args
       end

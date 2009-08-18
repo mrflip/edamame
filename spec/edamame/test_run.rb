@@ -9,13 +9,13 @@ require 'edamame'
 # end
 
 broker = Edamame::Broker.new(
-  :store => { :type => 'TyrantStore', :uri => ':11212'},
-  :queue => { :type => 'BeanstalkQueue', :beanstalkd_uris => ['localhost:11210'] }
+  :store => { :type => 'TyrantStore',    :uri => ':11212'},
+  :queue => { :type => 'BeanstalkQueue', :uris => ['localhost:11210'] }
   )
 
 # broker.queue.load
 
 
 broker.work do |job|
-  p [job, job.qjob]
+  Monkeyshines.logger.info [job, job.obj]
 end

@@ -1,8 +1,11 @@
 require 'wukong/extensions'
 require 'monkeyshines/utils/logger'
 require 'monkeyshines/utils/factory_module'
+require 'beanstalk-client'
+require 'edamame/job'
 require 'edamame/queue'
 require 'edamame/store'
+require 'edamame/scheduling'
 
 module Edamame
 
@@ -14,62 +17,119 @@ module Edamame
     def initialize options={}
       @store = Edamame::Store.create options[:store]
       @queue = Edamame::Queue.create options[:queue]
-      p [@store, @queue]
     end
+
+    #
+    # Add a new Job to the queue
+    #
     def put job
       store.save job
-      queue.put job.to_hash, job.priority, job.delay, job.ttr
+      queue.put job
     end
+
+    # Alias for put(job)
     def << job
       put job
     end
-    def reserve timeout=nil
-      qjob = queue.reserve(timeout) or return
-      job  = Job.from_hash JSON.load(qjob.body)
-      job.qjob = qjob
-      job
+
+    # Retrieve named record
+    def get key
+      Edamame::Job.from_hash store.get(key)
     end
+
+    #
+    # Request a job fom the queue for processing
+    #
+    def reserve timeout=nil
+      job = queue.reserve(timeout)
+    end
+
+    #
+    # Remove the job from the queue.
+    #
     def delete job
       store.delete job
-      queue.delete job.id
+      queue.delete job
     end
-    def reschedule job
-      release job
-    end
+
+    #
+    # Returns the job to the queue, to be re-run later.
+    #
+    # release'ing a job acknowledges it was completed, successfully or not
+    #
     def release job
       store.save    job
-      job.qjob.release job.priority, job.delay
+      queue.release job
     end
+
+    #
+    # Shelves the job.
+    #
     def bury job
       store.bury job
-      queue.bury job.id, job.priority
+      queue.bury job
     end
+
     #
-    # Batch operations
+    # Returns each job as it appears in the queue.
+    #
+    # all jobs -- active, inactive, running, etc -- are returned,
+    # and in some arbitrary order.
     #
     def each *args, &block
       store.each *args, &block
     end
+
+    #
+    # Loads all jobs from the backing store into the queue.
+    #
     def load
-      store.each_as(Edamame::Job) do |key, job|
-        p job
-        queue.put job.to_hash.to_json, job.priority, job.delay, job.ttr
-      end
+      hoard
+      unhoard
     end
-    def hoard
+
+  protected
+    #
+    # Destructively strips the beanstalkd queue of all of its jobs.
+    #
+    # This is the only way (I know) to enumerate all of the jobs in the queue --
+    # certainly the only way that respects concurrency.
+    #
+    # You shouldn't use this in general; the point of the backing store is to
+    # allow exactly such queries and enumeration. See #each instead.
+    #
+    def hoard &block
       jobs = []
       loop do
-        kicked = queue.job_queue.open_connections.map{|conxn| conxn.kick(20) }
-        break if (queue.job_queue_total_jobs == 0) && (!queue.job_queue.peek_ready)
+        kicked = queue.beanstalk.open_connections.map{|conxn| conxn.kick(20) }
+        break if (queue.beanstalk_total_jobs == 0) && (!queue.beanstalk.peek_ready)
         qjob = queue.reserve(15) or break
-        jobs << qjob
+        yield qjob
         qjob.delete
       end
       jobs
     end
+
+    #
+    # Loads all jobs from the backing store into the queue.
+    #
+    # The queue must be emptied of all jobs before running this command:
+    # otherwise jobs will be duplicated.
+    #
+    def unhoard
+      store.each do |key, hsh|
+        job = Edamame::Job.from_hash hsh
+        put job
+      end
+    end
+
+    #
+    #
+    #
     def log job
       Monkeyshines.logger.info job.inspect
     end
+
   end
 
   class Broker < PersistentQueue
@@ -78,8 +138,8 @@ module Edamame
         job    = reserve(3) or next
         result = block.call(job)
         # job.update!
+        release job
         log job
-        reschedule job
       end
     end
   end
