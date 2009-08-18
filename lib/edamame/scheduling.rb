@@ -1,3 +1,4 @@
+require 'wukong/extensions/hashlike_class'
 module Edamame
 
   module Scheduling
@@ -9,12 +10,29 @@ module Edamame
     # def to_hash
     # end
 
-    class Every < Struct.new(:period)
+    class Base
+      include Wukong::HashlikeClass
+      has_members :last_run, :total_runs
+
+      def initialize *args
+        members.zip(args).each do |key, val|
+          self[key] = val
+        end
+      end
+
+      def since_last
+      end
+    end
+
+    class Every < Base
+      has_member :period
       def delay
         period
       end
     end
-    class At < Struct.new(:time)
+
+    class At < Base
+      attr_accessor :time
       def initialize *args
         super *args
         self.time = Time.parse(time) if time.is_a?(String)
@@ -23,13 +41,14 @@ module Edamame
         time - Time.now
       end
     end
-    class Once < Struct.new(:delay)
+
+    class Once < Base
+      attr_accessor :delay
     end
-    class Rescheduling < Struct.new(
-        :period,
-        :total_items,
-        :goal_items,
-        :prev_max)
+
+    class Rescheduling < Base
+      has_members :period, :total_items, :goal_items, :prev_max
+
       cattr_accessor :min_resched_delay, :max_resched_delay
       self.min_resched_delay = 10
       self.max_resched_delay = 24*60*60

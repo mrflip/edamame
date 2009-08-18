@@ -2,10 +2,10 @@ require 'wukong/extensions'
 require 'monkeyshines/utils/logger'
 require 'monkeyshines/utils/factory_module'
 require 'beanstalk-client'
+require 'edamame/scheduling'
 require 'edamame/job'
 require 'edamame/queue'
 require 'edamame/store'
-require 'edamame/scheduling'
 
 module Edamame
 
@@ -13,16 +13,23 @@ module Edamame
     DEFAULT_CONFIG = {
       :queue => { :type => :beanstalk, :pool => ['localhost:11300'] }
     }
-    attr_reader :store, :queue
+    attr_reader :tube, :store, :queue
     def initialize options={}
+      @tube  = options[:tube] || :default
       @store = Edamame::Store.create options[:store]
-      @queue = Edamame::Queue.create options[:queue]
+      @queue = Edamame::Queue.create options[:queue].merge(:default_tube => @tube)
     end
 
     #
     # Add a new Job to the queue
     #
     def put job
+      job.tube = tube if job.tube.blank?
+      if store.include?(job.key)
+        log "Not enqueuing #{job.key} -- already in queue"
+        return
+      end
+      log ['putting', tube, job.key, job]
       store.save job
       queue.put job
     end
@@ -58,6 +65,7 @@ module Edamame
     # release'ing a job acknowledges it was completed, successfully or not
     #
     def release job
+      job.update!
       store.save    job
       queue.release job
     end
@@ -77,14 +85,19 @@ module Edamame
     # and in some arbitrary order.
     #
     def each *args, &block
-      store.each *args, &block
+      store.each do |key, job_hsh|
+        yield Edamame::Job.from_hash(job_hsh)
+      end
     end
 
     #
     # Loads all jobs from the backing store into the queue.
     #
-    def load
-      hoard
+    def load &block
+      hoard do |job|
+        yield(job) if block
+        store.save job
+      end
       unhoard
     end
 
@@ -99,15 +112,7 @@ module Edamame
     # allow exactly such queries and enumeration. See #each instead.
     #
     def hoard &block
-      jobs = []
-      loop do
-        kicked = queue.beanstalk.open_connections.map{|conxn| conxn.kick(20) }
-        break if (queue.beanstalk_total_jobs == 0) && (!queue.beanstalk.peek_ready)
-        qjob = queue.reserve(15) or break
-        yield qjob
-        qjob.delete
-      end
-      jobs
+      queue.empty tube, &block
     end
 
     #
@@ -119,15 +124,15 @@ module Edamame
     def unhoard
       store.each do |key, hsh|
         job = Edamame::Job.from_hash hsh
-        put job
+        queue.put job
       end
     end
 
     #
     #
     #
-    def log job
-      Monkeyshines.logger.info job.inspect
+    def log line
+      Monkeyshines.logger.info line
     end
 
   end
@@ -139,7 +144,7 @@ module Edamame
         result = block.call(job)
         # job.update!
         release job
-        log job
+        log job.inspect
       end
     end
   end

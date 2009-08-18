@@ -22,14 +22,27 @@ end
 
 include Edamame::Scheduling
 [
-['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(3),  {:key=>"night"}],
-['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(7),  {:key=>"day"  }],
-['test', 65536, 120, 1, {:last_run => "20090814012345"}, Every.new(15), {:key=>"hot"  }],
+[:default, 65536, 120, 1, Every.new(3,  "20090814012345"), {:key=>"night"}],
+[:default, 65536, 120, 1, Every.new(7,  "20090814012345"), {:key=>"day"  }],
+[:default, 65536, 120, 1, Every.new(15, "20090814012345"), {:key=>"hot"  }],
 ].each do |args|
   job = Edamame::Job.new *args
+  pq.store.set job.key, job
+  p [job]
+  p pq.get job.key
+end
+
+[
+{ 'scheduling' => Every.new(4), 'obj' => {:key=>"four"}},
+{ 'scheduling' => Every.new(5), 'obj' => {:key=>"five"  }},
+{ 'scheduling' => Every.new(6), 'obj' => {:key=>"six"  }},
+].each do |hsh|
+  job = Edamame::Job.from_hash hsh
+  job.tube = pq.tube
   pq.store.set job.key, job
   p job
   p pq.get job.key
 end
+
 
 pq.load

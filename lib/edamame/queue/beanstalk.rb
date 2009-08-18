@@ -8,12 +8,12 @@ module Edamame
     # This is useful for mass scraping of timelines (RSS feeds, twitter search
     # results, etc. See http://github.com/mrflip/wuclan for )
     #
-    class BeanstalkQueue < Edamame::Queue::Base
+    class BeanstalkQueue
       DEFAULT_OPTIONS = {
         :priority          => 65536,    # default job queue priority
         :time_to_run       => 60*5,     # 5 minutes to complete a job or assume dead
         :uris              => ['localhost:11300'],
-        :default_tube      => nil,
+        :default_tube      => 'default',
       }
       attr_accessor :options
 
@@ -21,7 +21,8 @@ module Edamame
       # beanstalk_pool -- specify nil to use the default single-node ['localhost:11300'] pool
       #
       def initialize _options={}
-        self.options = DEFAULT_OPTIONS.merge(_options)
+        self.options = DEFAULT_OPTIONS.deep_merge(_options.compact)
+        options[:default_tube] = options[:default_tube].to_s
       end
 
       #
@@ -69,7 +70,11 @@ module Edamame
 
       # The beanstalk pool which acts as job queue
       def beanstalk
-        @beanstalk ||= Beanstalk::Pool.new(options[:uris], options[:default_tube])
+        return @beanstalk if @beanstalk
+        @beanstalk = Beanstalk::Pool.new(options[:uris], options[:default_tube])
+        @beanstalk.use   options[:default_tube]
+        @beanstalk.watch options[:default_tube]
+        @beanstalk
       end
       # Close the job queue
       def close
@@ -85,6 +90,34 @@ module Edamame
       def beanstalk_total_jobs
         stats = beanstalk.stats
         [:reserved, :ready, :buried, :delayed].inject(0){|sum,type| sum += stats["current-jobs-#{type}"]}
+      end
+
+      #
+      #
+      #
+      def empty tube=nil, &block
+        tube = tube.to_s if tube
+        curr_tube    = beanstalk.list_tube_used.values.first
+        curr_watches = beanstalk.list_tubes_watched.values.first
+        beanstalk.use tube   if tube
+        beanstalk.watch tube if tube
+        p ["emptying", tube, beanstalk_total_jobs]
+        loop do
+          kicked = beanstalk.open_connections.map{|conxn| conxn.kick(20) }
+          break if (beanstalk_total_jobs == 0) || (!beanstalk.peek_ready)
+          qjob = reserve(5) or break
+          yield qjob
+          qjob.delete
+        end
+        beanstalk.use curr_tube
+        beanstalk.ignore tube if (! curr_watches.include?(tube))
+      end
+
+      def empty_all &block
+        tubes = beanstalk.list_tubes.values.flatten.uniq
+        tubes.each do |tube|
+          empty tube,  &block
+        end
       end
 
     end # class

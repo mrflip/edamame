@@ -1,4 +1,5 @@
 module Edamame
+
   #
   #
   # id, name, body, timeouts, time-left, age, state, delay, pri, ttr
@@ -16,18 +17,40 @@ module Edamame
   #   ** obj
   #   ** scheduling
   #   ** stats
+  module JobCore
+
+    def key
+      [ tube, obj[:key]||obj['key'] ].join('-')
+    end
+
+    #
+    def since_last
+      scheduling.last_run - Time.now
+    end
+
+    # Beanstalk::Job stats:
+    #    { "pri"=>65536, "ttr"=>120,
+    #    {"releases"=>8, "delay"=>5, "kicks"=>0, "buries"=>0, "id"=>202,
+    #     "tube"=>"default", "time-left"=>120,
+    #     "timeouts"=>0, "age"=>1415, "state"=>"reserved"}
+    #
+    #    [ "id",
+    #      "tube", "pri", "ttr", "state",
+    #      "delay",
+    #      "releases", "kicks", "buries",
+    #      "time-left", "timeouts", "age", ]
+  end
+
 
   Beanstalk::Job.class_eval do
+    include JobCore
+
     def scheduling
       @scheduling ||= Edamame::Scheduling.from_hash ybody['scheduling']
     end
 
     def obj
       ybody['obj']
-    end
-
-    def key
-      [tube, obj[:key]].join('-')
     end
 
     def priority
@@ -38,20 +61,24 @@ module Edamame
       stats['tube']
     end
 
+    # Override this for rescheduling
+    def update!
+      scheduling.total_runs = scheduling.total_runs.to_i + stats['releases']
+      scheduling.last_run   = Time.now
+    end
+
     def to_hash flatten=true
       hsh =       {
         "tube"       => tube,
         "priority"   => priority,
         "ttr"        => ttr,
         "state"      => state,
-        "stats"      => stats.to_hash,
         "scheduling" => scheduling.to_hash.merge('type'=>scheduling.class.to_s.gsub(/Edamame::Scheduling::/,'')),
         'key'        => key,
         "obj"        => obj.to_hash,
       }
       if flatten
         hsh["scheduling"] = hsh['scheduling'].to_yaml
-        hsh["stats"]      = hsh['stats'].to_yaml
         hsh["obj"]        = hsh['obj'].to_yaml
       end
       hsh
@@ -60,15 +87,24 @@ module Edamame
 
   Job = Struct.new(
     :tube, :priority, :ttr, :state,
-    :stats, :scheduling, :obj
+    :scheduling, :obj
     )
 
   Job.class_eval do
+    include JobCore
+
+    DEFAULT_OPTIONS = {
+      'priority'   => 65536,
+      'ttr'        => 120,
+      'state'      => 1,
+      'scheduling' => Edamame::Scheduling::Once.new(0)
+    }
+
     # attr_accessor :runs, :failures, :prev_run_at
     def initialize *args
       super *args
-      [:priority, :ttr, :state].each{|k| self[k] = self[k].to_i }
-      if self.stats.is_a?(String)      then self.stats      = YAML.load(self.stats)      rescue nil ; end
+      DEFAULT_OPTIONS.each{|key,val| self[key] ||= val }
+      [:priority, :ttr, :state].each{|key| self[key] = self[key].to_i }
       case self.scheduling
       when String
         scheduling_hash = YAML.load(self.scheduling) rescue nil
@@ -79,26 +115,16 @@ module Edamame
       if self.obj.is_a?(String)        then self.obj        = YAML.load(self.obj)        rescue nil ; end
     end
 
-    # Override this for rescheduling
-    def update!
-    end
-
     def delay
       scheduling.delay
     end
 
-    def key
-      [tube, obj[:key]].join('-')
-    end
-
     def to_hash flatten=true
       hsh = super()
-      hsh["scheduling"] = scheduling.to_hash.merge('type'=>scheduling.class.to_s.gsub(/Edamame::Scheduling::/,''))
-      hsh["stats"]      = stats.to_hash
+      hsh["scheduling"] = scheduling.to_hash
       hsh["obj"]        = obj.to_hash
       if flatten
         hsh["scheduling"] = hsh['scheduling'].to_yaml
-        hsh["stats"]      = hsh['stats'].to_yaml
         hsh["obj"]        = hsh['obj'].to_yaml
       end
       hsh
