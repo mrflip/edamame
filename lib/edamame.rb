@@ -23,15 +23,15 @@ module Edamame
     #
     # Add a new Job to the queue
     #
-    def put job
+    def put job, *args
       job.tube = tube if job.tube.blank?
       if store.include?(job.key)
-        log "Not enqueuing #{job.key} -- already in queue"
+        # log "Not enqueuing #{job.key} -- already in queue"
         return
       end
-      log ['putting', tube, job.key, job]
+      # log ['putting', tube, job.priority, job.obj['key'], job]
       store.save job
-      queue.put job
+      queue.put job, *args
     end
 
     # Alias for put(job)
@@ -55,7 +55,7 @@ module Edamame
     # Remove the job from the queue.
     #
     def delete job
-      store.delete job
+      store.delete job.key
       queue.delete job
     end
 
@@ -67,7 +67,7 @@ module Edamame
     def release job
       job.update!
       store.save    job
-      queue.release job
+      queue.release job, job.priority, job.scheduling.delay
     end
 
     #
@@ -138,13 +138,25 @@ module Edamame
   end
 
   class Broker < PersistentQueue
-    def work &block
-      loop do
-        job    = reserve(3) or next
-        result = block.call(job)
-        # job.update!
+    def reschedule job
+      delay = job.scheduling.delay
+      if delay
+        # log_job job, 'rescheduled', delay, (Time.now + delay).to_flat, job.scheduling.to_flat.join
         release job
-        log job.inspect
+      else
+        # log_job job, 'deleted'
+        delete job
+      end
+    end
+    def log_job job, *stuff
+      log [job.tube, job.priority, job.delay, job.obj['key'], *stuff].flatten.join("\t")
+    end
+    def work timeout=10, &block
+      loop do
+        job    = reserve(timeout) or break
+        result = block.call(job)
+        job.update!
+        reschedule job
       end
     end
   end

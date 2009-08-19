@@ -16,12 +16,18 @@ module Edamame
 
       def initialize *args
         members.zip(args).each do |key, val|
-          self[key] = val
+          self[key] = val if val
         end
       end
 
-      def since_last
+      def last_run_time
+        last_run.is_a?(String) ? Time.parse(last_run) : last_run
       end
+
+      def since_last
+        Time.now - last_run_time
+      end
+
     end
 
     class Every < Base
@@ -38,12 +44,14 @@ module Edamame
         self.time = Time.parse(time) if time.is_a?(String)
       end
       def delay
-        time - Time.now
+        @delay ||= time - Time.now
       end
     end
 
     class Once < Base
-      attr_accessor :delay
+      def delay
+        nil
+      end
     end
 
     class Rescheduling < Base

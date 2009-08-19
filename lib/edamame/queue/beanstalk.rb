@@ -28,8 +28,9 @@ module Edamame
       #
       # Add a new Job to the queue
       #
-      def put job
-        beanstalk.yput job.to_hash(false), job.priority, job.delay, job.ttr
+      def put job, priority=nil, delay=nil
+        beanstalk.yput(job.to_hash(false),
+          (priority || job.priority), (delay || job.delay), job.ttr)
       end
 
       #
@@ -44,8 +45,8 @@ module Edamame
       #
       # release'ing a job acknowledges it was completed, successfully or not
       #
-      def release(job)
-        job.release job.priority, job.delay
+      def release job, priority=nil, delay=nil
+        job.release( (priority || job.priority), (delay || job.delay) )
       end
 
       #

@@ -73,7 +73,7 @@ module Edamame
         "priority"   => priority,
         "ttr"        => ttr,
         "state"      => state,
-        "scheduling" => scheduling.to_hash.merge('type'=>scheduling.class.to_s.gsub(/Edamame::Scheduling::/,'')),
+        "scheduling" => scheduling.to_hash,
         'key'        => key,
         "obj"        => obj.to_hash,
       }
@@ -97,7 +97,7 @@ module Edamame
       'priority'   => 65536,
       'ttr'        => 120,
       'state'      => 1,
-      'scheduling' => Edamame::Scheduling::Once.new(0)
+      'scheduling' => Edamame::Scheduling::Once.new()
     }
 
     # attr_accessor :runs, :failures, :prev_run_at
