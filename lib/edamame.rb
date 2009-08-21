@@ -96,9 +96,11 @@ module Edamame
     def load &block
       hoard do |job|
         yield(job) if block
-        store.save job
+        unless pq.store.include?(job)
+          store.save job
+        end
       end
-      unhoard
+      unhoard &block
     end
 
   protected
@@ -121,9 +123,10 @@ module Edamame
     # The queue must be emptied of all jobs before running this command:
     # otherwise jobs will be duplicated.
     #
-    def unhoard
+    def unhoard &block
       store.each do |key, hsh|
         job = Edamame::Job.from_hash hsh
+        yield(job) if block
         queue.put job
       end
     end
