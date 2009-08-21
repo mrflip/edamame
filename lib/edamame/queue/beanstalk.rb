@@ -73,8 +73,7 @@ module Edamame
       def beanstalk
         return @beanstalk if @beanstalk
         @beanstalk = Beanstalk::Pool.new(options[:uris], options[:default_tube])
-        @beanstalk.use   options[:default_tube]
-        @beanstalk.watch options[:default_tube]
+        self.tube= options[:default_tube]
         @beanstalk
       end
       # Close the job queue
@@ -83,13 +82,19 @@ module Edamame
         @beanstalk = nil
       end
 
+      # uses and watches the given beanstalk tube
+      def tube= _tube
+        puts "#{self.class} setting tube to #{_tube}, was #{@tube}"
+        @beanstalk.use   _tube
+        @beanstalk.watch _tube
+      end
+
       # Stats on job count across the pool
-      def beanstalk_stats
+      def stats
         beanstalk.stats.select{|k,v| k =~ /jobs/}
       end
       # Total jobs in the queue, whether reserved, ready, buried or delayed.
-      def beanstalk_total_jobs
-        stats = beanstalk.stats
+      def total_jobs
         [:reserved, :ready, :buried, :delayed].inject(0){|sum,type| sum += stats["current-jobs-#{type}"]}
       end
 
@@ -100,7 +105,7 @@ module Edamame
         tube = tube.to_s if tube
         curr_tube    = beanstalk.list_tube_used.values.first
         curr_watches = beanstalk.list_tubes_watched.values.first
-        beanstalk.use tube   if tube
+        beanstalk.use   tube if tube
         beanstalk.watch tube if tube
         p ["emptying", tube, beanstalk_total_jobs]
         loop do

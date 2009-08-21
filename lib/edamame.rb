@@ -24,14 +24,17 @@ module Edamame
     # Add a new Job to the queue
     #
     def put job, *args
-      job.tube = tube if job.tube.blank?
-      if store.include?(job.key)
-        # log "Not enqueuing #{job.key} -- already in queue"
-        return
-      end
-      # log ['putting', tube, job.priority, job.obj['key'], job]
+      job.tube  = self.tube if job.tube.blank?
+      self.tube = job.tube
+      return if store.include?(job.key)
       store.save job
-      queue.put job, *args
+      queue.put  job, *args
+    end
+
+    def tube= _tube
+      return if @tube == _tube
+      puts "#{self.class} setting tube to #{_tube}, was #{@tube}"
+      queue.tube = @tube = _tube
     end
 
     # Alias for put(job)
@@ -96,11 +99,18 @@ module Edamame
     def load &block
       hoard do |job|
         yield(job) if block
-        unless pq.store.include?(job)
+        unless store.include?(job.key)
           store.save job
         end
       end
       unhoard &block
+    end
+
+    # Returns a hash of stats about the store and queue
+    def stats
+      { :store_stats => store.stats,
+        :queue_stats => queue.stats,
+        :tube        => self.tube }
     end
 
   protected
@@ -126,6 +136,7 @@ module Edamame
     def unhoard &block
       store.each do |key, hsh|
         job = Edamame::Job.from_hash hsh
+        self.tube = job.tube
         yield(job) if block
         queue.put job
       end
@@ -137,7 +148,6 @@ module Edamame
     def log line
       Monkeyshines.logger.info line
     end
-
   end
 
   class Broker < PersistentQueue

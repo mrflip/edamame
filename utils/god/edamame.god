@@ -13,15 +13,14 @@ require 'god_site_config'
 # (for production, use the etc/initc.d script in this directory)
 
 
-FAITHFUL = [
+THE_FAITHFUL = [
   [BeanstalkdGod, { :port => 11210 }],
   [TyrantGod,     { :port => 11212, :db_dirname => '/data/distdb', :db_name => 'flat_delay_queue.tct' }],
-  [TyrantGod,     { :port => 11219, :db_dirname => '/data/distdb', :db_name => 'foo_queue.tct' }],
-  [TyrantGod,     { :port => 11222, :db_dirname => '/data/distdb', :db_name => 'fetched_urls.tch' }],
-  #  [SinatraGod,    { :port => 11219, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
+  [TyrantGod,     { :port => 11213, :db_dirname => '/data/distdb', :db_name => 'fetched_urls.tch' }],
+  # [SinatraGod,    { :port => 11219, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
 ]
 
-FAITHFUL.each do |klass, config|
+THE_FAITHFUL.each do |klass, config|
   proc = klass.create(config.merge :flapping_notify => 'default')
   proc.mkdirs!
 end

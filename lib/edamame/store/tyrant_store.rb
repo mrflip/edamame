@@ -35,6 +35,10 @@ module Edamame
         db.rnum
       end
 
+      def stats
+        {  :size => size }
+      end
+
       def include? *args
         db.has_key? *args
       end

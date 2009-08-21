@@ -5,7 +5,7 @@ class BeanstalkdGod < GodProcess
     :user           => nil,
     :max_job_size   => '65535',
     :max_cpu_usage  => 50.percent,
-    :max_mem_usage  => 150.megabytes,
+    :max_mem_usage  => 500.megabytes,
     :monitor_group  => 'beanstalkds',
     :beanstalkd_exe => '/usr/local/bin/beanstalkd',
   }
