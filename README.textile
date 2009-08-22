@@ -1,0 +1,178 @@
+h1. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
+
+"Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
+
+* fast, scalable, lightweight and distributed
+* persistent and recoverable
+* scalable up to your memory limits
+* queryable and enumerable jobs
+* named jobs
+* reasonably-good availability.
+
+Like beanstalk, it is a job queue, not just a message queue:
+* priority job scheduling, not just FIFO
+* Supports multiple queues ('tubes')
+* reliable scheduling: jobs that time out are re-assigned
+
+It includes a few nifty toys:
+* Scripts for "God":http://bit.ly/godmonitor to monitor and restart the daemons
+* Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
+* The start of a lightweight web frontend in Sinatra.
+
+Hi,
+
+I've slapped together the beanstalk distributed priority queue (http://bit.ly/beanstalkd) and the Tokyo Tyrant lightweight database (http://bit.ly/ttyrant - http://bit.ly/ttyrantruby) to create a serviceable persistent distributed priority queue.
+
+If you're willing to accept its weaknesses, it gives you 
+* persistence
+* queryability and enumeration of jobs
+* named jobs
+
+h3. Design
+
+Jobs are persisted to a tokyo tyrant backing store. Beanstalkd 
+
+ (No failover or discovery, but yes restarting and reloading.)
+
+
+h3. Caveats
+
+Weaknesses? Mainly that it will make an Erlang'er cry for its lack of concurrency correctness. Its goal is to work pretty well and to recover gracefully, but its design limits .
+
+* We store jobs in two places: the central DB and the distributed queue.
+
+* As always, your jobs must either be idempotent, or harmless if re-run: a job could start and do some or all of its job -- but lose contact with the queue, causing the job to be re-run. This is inherent in beanstalkd (and most comparable solutions), not just edamame.
+
+* Although God
+
+h3. TODOs
+
+* Restarting is still manual: you have to run bin/sync.rb to reload the queue from the database
+* Right now each jobs lives in full in the beanstalkd. This carries a heavy memory cost but a performance gain (the alternative is to do a second query to the DB once the job has been retrieved). I'm going to make both implementations available.
+* The sinatra queue viewer doesn't work at the moment.
+
+h2. Requirements and Installation
+
+For the beanstalk part, You'll need libevent >= 1.4, beanstalkd >= 1.3, and beanstalk-client
+
+<pre>
+    cd /usr/local/src/ ;
+    pkg=libevent-1.4.11-stable ;( wget -nc http://monkey.org/~provos/${pkg}.tar.gz     && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local                         && make -j2 && sudo make install ) ;
+    pkg=beanstalkd-1.3         ;( wget -nc http://xph.us/dist/beanstalkd/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local --with-event=/usr/local && make -j2 && sudo make install ) ;
+    sudo gem install --no-ri --no-rdoc dustin-beanstalk-client ;
+</pre>
+    
+For the tokyotyrant part, you'll need tokyocabinet, tokyotyrant and their corresponding ruby libraries:
+
+<pre>
+    cd /usr/local/src/ ;
+    ttbase=http://downloads.sourceforge.net/sourceforge/tokyocabinet
+    pkg=tokyocabinet-1.4.29    ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
+    pkg=tokyotyrant-1.1.30     ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
+    pkg=tokyocabinet-ruby-1.27 ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ruby extconf.rb                 && make -j2 && sudo make install ) ;
+    pkg=tokyotyrant-ruby-1.10  ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && sudo ruby install.rb ) ;
+</pre>
+
+h2. Why you should, or shouldn't, use Edamame
+
+**Beanstalkd**'s strengths:
+* fast 
+* loosely-ordered **priority queuing** (few others have this)
+* multiple queues (via 'tubes')
+* reliable: jobs that time out are re-assigned
+* lightweight
+* distributed
+* scalable up to your memory limits
+* simple implementation
+* simple wire protocol and thus tons of language libraries
+
+It lacks
+* persistence
+* security (via, e.g., signed jobs)
+* failover / high availability
+* discovery of new instances
+
+**Edamame** adds persistence and (with the God scripts) 'good-enough availability' (note that it still lacks discovery). It also introduces a bit of complexity and some risk of inconsistent state or duplicated jobs (see above).
+
+h4. Other distributed queues
+
+RabbitMQ, Kestrel and Amazon's SQS seem to be the best industrial-strength distributed queue systems. Note that they are messaging queues and lack some of the specifically job queuing features of Beanstalk.
+
+* "RabbitMQ":http://www.rabbitmq.com/
+** fast
+** FIFO message queue: poor job support
+** ?? NO multiple queues
+** ?? NO reliable: jobs that time out are re-assigned
+** lightweight
+** distributed
+** scalable up to your memory limits
+** Uses the industrial strength AMPQ protocol
+** HA, failover, discovery
+** Strong support for Python and  .  Libraries with weak documentation exist in most other languages.
+
+* "Kestrel,":http://github.com/robey/kestrel/tree/master a reimplementation of Starling
+** fast
+** Scheduling is loosely-ordered FIFO (no priority)
+** multiple queues (via 'tubes').
+** reliable: jobs that time out are re-assigned
+** lightweight
+** distributed
+** scalable up to your memory limits
+** persistent *and* journaled
+** Written in Scala (Java). Uses memcached protocol: more or less perfectly cross-platform.
+** Documentation is sparse, though Starling's and Memcached's have most of what you need.
+** Note that Starling lacks many of these features; Kestrel makes a better job queue and should be a functional replacement
+** see: "Kestrel on github":http://github.com/robey/kestrel - "Kestrel announcement":http://robey.lag.net/2008/11/27/scarling-to-kestrel.html
+
+* "Amazon SQS":http://aws.amazon.com/sqs/
+** Not as fast
+** Costs money -- equeuing and dequeuing 1M requests costs $2.00 for reqs; if your server is not on AWS then you'll pay data charges, an additional ($0.27 per kB per million jobs).
+
+This "comparison of message queues":http://wiki.secondlife.com/wiki/Message_Queue_Evaluation_Notes describes one group's opinionated survey of the industrial strenght distributed messaging queue ecosystem. Note carefully their criteria; ours were quite different, hence edamame.
+
+h4. Other worker queues
+
+Most of these are heavy-weight job queuing solutions that play nice with Rails:
+
+* "BackgroundJob":http://codeforpeople.rubyforge.org/svn/bj/trunk/README
+* "BackgroundRB":http://backgroundrb.rubyforge.org/
+* "Delayed Job":http://github.com/tobi/delayed_job/
+* "Workling":http://github.com/purzelrakete/workling/ ("Starling and Workling":http://railscasts.com/episodes/128-starling-and-workling)
+* "Spawn":http://github/tra/spawn
+
+This talk by Rob Mack on "Background Processing in Ruby on Rails":http://blog.robmack.com/2009/05/04/background_processing/ (at the April "Austin on Rails":http://austinonrails.org/ meeting) has a great overview of job queuing solutions for Rails and in general.
+
+h2. Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but
+   bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+h2. Endnotes
+
+* Origin of the name "edamame":http://en.wikipedia.org/wiki/Edamame
+* This library was written to support the "Monkeyshines":http://bit.ly/shines distributed API scraper.
+* Beanstalk:
+** "Beanstalk, a fast, distributed, in-memory workqueue service":http://xph.us/software/beanstalkd/
+** "Beanstalkd code":http://github.com/kr/beanstalkd/tree/master
+** "FAQ":http://wiki.github.com/kr/beanstalkd/faq
+** "Beanstalk Ruby Client":http://github.com/dustin/beanstalk-client-ruby/tree/master
+** "Tutorial from nubyonrails":http://nubyonrails.com/articles/about-this-blog-beanstalk-messaging-queue
+** "Mailing list":http://www.mail-archive.com/beanstalk-talk@googlegroups.com/
+** Some "beanstalk utilities":http://github.com/dustin/beanstalk-tools/tree/master -- edamame has its own take on some of these.
+* Tokyo Tyrant:
+** "Tokyo Tyrant":http://tokyocabinet.sourceforge.net/tyrantdoc/
+** "Tokyo Tyrant Ruby libs":http://tokyocabinet.sourceforge.net/tyrantrubydoc/
+** You'll need the "Tokyo Cabinet":http://tokyocabinet.sourceforge.net libs and the "Tokyo Cabinet Ruby libs":http://tokyocabinet.sourceforge.net/tyrantdoc/
+* "God process monitoring framework":http://god.rubyforge.org/
+** http://railscasts.com/episodes/130-monitoring-with-god
+** Some code for the god conf is inspired by that railscast, "this pastie,":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew the "one from the god docs":http://god.rubyforge.org/, and "Configuring GMail notifiers in God":http://millarian.com/programming/ruby-on-rails/monitoring-thin-using-god-with-google-apps-notifications/
+
+** Alternatives to God include (in order of complexity): "Monit,":http://mmonit.com/monit/ perhaps "with Munin;":http://www.howtoforge.com/server_monitoring_monit_munin "Cacti":http://www.cacti.net/ and "Hyperic":http://www.hyperic.com/
+
+
