@@ -1,7 +1,74 @@
 ---
 layout: default
-title: mrflip.github.com/edamame
+title:  mrflip.github.com/edamame
 ---
 
+* "README":README.textile
+* "README":README.html
+* "About edamame":gem.html
 
-Hi!
+
+    <div class="download">
+      <a href="http://github.com/mrflip/edamame/zipball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+        <a href="http://github.com/mrflip/edamame/tarball/master">
+          <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+        </div>
+        
+        <h1><a href="http://github.com/mrflip/edamame">edamame</a> 
+        <span class="small">by <a href="http://github.com/mrflip">mrflip</a></span></h1>
+
+        <div class="description">
+          Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
+        </div>
+
+        <p>
+          "Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
+          
+          * fast, scalable, lightweight and distributed
+          * persistent and recoverable
+          * scalable up to your memory limits
+          * queryable and enumerable jobs
+          * named jobs
+          * reasonably-good availability.
+          
+          Like beanstalk, it is a job queue, not just a message queue:
+          * priority job scheduling, not just FIFO
+          * Supports multiple queues ('tubes')
+          * reliable scheduling: jobs that time out are re-assigned
+          
+          It includes a few nifty toys:
+          * Scripts for "God":http://bit.ly/godmonitor to monitor and restart the daemons
+          * Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
+          * The start of a lightweight web frontend in Sinatra.</p><h2>Dependencies</h2>
+          <p>* Beanstalk
+          * Tokyo Tyrant
+          * (wukong, currently -- this will go away)</p>
+          <h2>Install</h2>
+          <p>See readme.</p>
+
+h2. MIT License
+
+bq.. __Copyright (c) 2009 Philip (flip) Kromer__
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+          
+          <h2>Authors</h2>
+          <p>Philip (flip) Kromer (flip@infochimps.org)<br/><br/>      </p>
+          <h2>Contact</h2>
+          <p>Philip (flip) Kromer (flip@infochimps.org)<br/>      </p>
+
+
+h2. Download
+
+You can download this project in either "zip":http://github.com/mrflip/edamame/zipball/master or "tar":http://github.com/mrflip/edamame/tarball/master formats.
+
+You can also clone the project with "Git":http://git-scm.com by running:
+
+pre. $ git clone git://github.com/mrflip/edamame
+      

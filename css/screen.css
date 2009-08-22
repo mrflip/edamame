@@ -6,55 +6,72 @@
 
 /* Global Reset */
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-}
-
+*               { margin: 0; padding: 0; }
+html, body      { height: 100%; }
 body {
   background-color: white;
   font: 13.34px helvetica, arial, clean, sans-serif;
   *font-size: small;
   text-align: center;
 }
-
-h1, h2, h3, h4, h5, h6 { margin-top: 1em }
-
-h1      { font-size: 150%; border: 1px solid #ddd ; border-width: 0 0 1px 0 ; padding: 0.5em 0 0.25em }
-h2      { font-size: 125%; }
-h3      { font-size: 110%; }
-h4, h5, h6 {
-  font-size: 100%;
-}
-
-h1 {
-  margin-bottom: 1em;
-}
-
-p {
-  margin: 1em 0;
-}
-
-a {
-  color: #00a;
-}
-
-a:hover {
-  color: black;
-}
-
-a:visited {
-  color: #a0a;
-}
-
 table {
   font-size: inherit;
   font: 100%;
 }
+h1, h2, h3      { margin-top: 1em;   }
+h4, h5, h6      { margin-top: 1em;   }
+p               { margin:     1em 0; }
+
+h1              { font-size: 150%;        }
+h2              { font-size: 125%;        }
+h3              { font-size: 110%;        }
+h4, h5, h6      { font-size: 100%;        }
+h1 .small       { font-size: 75%;         }
+h1 a,h2 a,h3 a  { text-decoration: none;  }
+
+h1              {
+  margin-bottom: 1em            ;
+  padding:       0.5em 0 0.25em ;
+  border:        1px solid #ddd ;
+  border-width:  0 0 1px 0      ; 
+}
+
+/*****************************************************************************/
+/*
+/* Text
+/*
+/*****************************************************************************/
+
+ul, ol { margin-left: 1.25em ; }
+
+blockquote {
+  margin-left:  1.25em ;
+  margin-right: 1.25em ;
+  color:        #444;
+}
+
+a               { color: #00a;          }
+a:hover         { color: black;         }
+a:visited       { color: #a0a;          }
+
+pre { 
+  margin-left:          1.25em ;
+  padding:              0.5em;
+  font-size:            95%;
+}
+
+pre             { color: #222;   border: 1px solid #ddd;  background-color: #ddd; }
+code            {                border: 1px solid #ddd;  background-color: #eef; }
+pre.terminal    { color:  white; border: 1px solid black; }
+pre code          {              border: none; }
+pre.terminal,
+pre.terminal code {                                       background-color: #333; }
+
+code {
+  font-size:            95%;
+  padding:              0 .2em;
+}
+
 
 /*****************************************************************************/
 /*
@@ -62,24 +79,20 @@ table {
 /*
 /*****************************************************************************/
 
-ul {
-      margin-left: 1.25em ;
-}
-
 ul.posts {
   list-style-type: none;
   margin-bottom: 2em;
 }
 
-  ul.posts li {
-    line-height: 1.75em;
-  }
+ul.posts li {
+  line-height: 1.75em;
+}
 
-  ul.posts span {
-    color: #aaa;
-    font-family: Monaco, "Courier New", monospace;
-    font-size: 80%;
-  }
+ul.posts span {
+  color: #aaa;
+  font-family: Monaco, "Courier New", monospace;
+  font-size: 80%;
+}
 
 /*****************************************************************************/
 /*
@@ -88,11 +101,11 @@ ul.posts {
 /*****************************************************************************/
 
 .site {
-  font-size: 110%;
-  text-align: justify;
-  width: 40em;
-  margin: 3em auto 2em auto;
-  line-height: 1.5em;
+  font-size:            110%;
+  text-align:           justify;
+  width:                40em;
+  margin:               3em auto 2em auto;
+  line-height:          1.5em;
 }
 
 .title {
@@ -101,56 +114,56 @@ ul.posts {
   margin-bottom: 2em;
 }
 
-  .site .title a {
-    color: #a00;
-    text-decoration: none;
-    margin-left:  0.5em;
-    margin-right: 0.5em;
-  }
+.site .title a {
+  color: #a00;
+  text-decoration: none;
+  margin-left:  0.5em;
+  margin-right: 0.5em;
+}
 
-  .site .title a:hover {
-    color: black;
-  }
+.site .title a:hover {
+  color: black;
+}
 
-  .site .title a.extra {
-    color: #aaa;
-    text-decoration: none;
-  }
+.site .title a.extra {
+  color: #aaa;
+  text-decoration: none;
+}
 
-  .site .title a.extra:hover {
-    color: black;
-  }
+.site .title a.extra:hover {
+  color: black;
+}
 
-  .site .meta {
-    color: #aaa;
-  }
+.site .meta {
+  color: #aaa;
+}
 
-  .site .footer {
-    font-size: 80%;
-    color: #666;
-    border-top: 4px solid #eee;
-    margin-top: 2em;
-    overflow: hidden;
-  }
+.site .footer {
+  font-size: 80%;
+  color: #666;
+  border-top: 4px solid #eee;
+  margin-top: 2em;
+  overflow: hidden;
+}
 
-    .site .footer .contact {
-      float: left;
-      margin-right: 3em;
-    }
+.site .footer .contact {
+  float: left;
+  margin-right: 3em;
+}
 
-      .site .footer .contact a {
-        color: #8085C1;
-      }
+.site .footer .contact a {
+  color: #8085C1;
+}
 
-    .site .footer .rss {
-      margin-top: 1.1em;
-      margin-right: -.2em;
-      float: right;
-    }
+.site .footer .rss {
+  margin-top: 1.1em;
+  margin-right: -.2em;
+  float: right;
+}
 
-      .site .footer .rss img {
-        border: 0;
-      }
+.site .footer .rss img {
+  border: 0;
+}
 
 /*****************************************************************************/
 /*
@@ -162,46 +175,12 @@ ul.posts {
 
 }
 
-  /* standard */
-
-  #post pre {
-    border: 1px solid #ddd;
-    background-color: #eef;
-    padding: 0 .4em;
-  }
-
-  #post ul,
-  #post ol {
-    margin-left: 1.25em;
-  }
-
-  #post code {
-    border: 1px solid #ddd;
-    background-color: #eef;
-    font-size: 95%;
-    padding: 0 .2em;
-  }
-
-    #post pre code {
-      border: none;
-    }
-
-  /* terminal */
-
-  #post pre.terminal {
-    border: 1px solid black;
-    background-color: #333;
-    color: white;
-  }
-
-  #post pre.terminal code {
-    background-color: #333;
-  }
+/* standard */
 
 #related {
   margin-top: 2em;
 }
 
-  #related h2 {
-    margin-bottom: 1em;
-  }
+#related h2 {
+  margin-bottom: 1em;
+}
