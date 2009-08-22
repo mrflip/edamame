@@ -1,0 +1,1 @@
+ps aux | egrep '(beanstalk|ttserver|god|ruby|scrape|shotgun|thin)' | grep -v ' grep '
