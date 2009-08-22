@@ -6,17 +6,21 @@ require 'tyrant_god'
 require 'sinatra_god'
 require 'god_site_config'
 
+EDAMAME_DB_DIR = '/data/distdb'
+
+#
 # For debugging:
 #
 #   sudo god -c /Users/flip/ics/edamame/utils/god/edamame.god -D
 #
 # (for production, use the etc/initc.d script in this directory)
-
-
+#
+# TODO: define an EdamameDirector that lets us name these collections.
+#
 THE_FAITHFUL = [
   [BeanstalkdGod, { :port => 11210 }],
-  [TyrantGod,     { :port => 11212, :db_dirname => '/data/distdb', :db_name => 'flat_delay_queue.tct' }],
-  [TyrantGod,     { :port => 11213, :db_dirname => '/data/distdb', :db_name => 'fetched_urls.tch' }],
+  [TyrantGod,     { :port => 11212, :db_dirname => EDAMAME_DB_DIR, :db_name => 'flat_delay_queue.tct' }],
+  [TyrantGod,     { :port => 11213, :db_dirname => EDAMAME_DB_DIR, :db_name => 'fetched_urls.tch' }],
   # [SinatraGod,    { :port => 11219, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
 ]
 
