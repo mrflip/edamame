@@ -1,8 +1,23 @@
-h1. Beanstalk + Tokyo Tyrant = Edamame
+h1. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
 
-"Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent lightweight networked queuing system.
+"Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
 
-It includes  scripts for monitoring and failover, and a few other nifty toys.
+* fast, scalable, lightweight and distributed
+* persistent and recoverable
+* scalable up to your memory limits
+* queryable and enumerable jobs
+* named jobs
+* reasonably-good availability.
+
+Like beanstalk, it is a job queue, not just a message queue:
+* priority job scheduling, not just FIFO
+* Supports multiple queues ('tubes')
+* reliable scheduling: jobs that time out are re-assigned
+
+It includes a few nifty toys:
+* Scripts for "God":http://bit.ly/godmonitor to monitor and restart the daemons
+* Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
+* The start of a lightweight web frontend in Sinatra.
 
 Hi,
 
@@ -10,17 +25,14 @@ I've slapped together the beanstalk distributed priority queue (http://bit.ly/be
 
 If you're willing to accept its weaknesses, it gives you 
 * persistence
-* queryability of jobs
+* queryability and enumeration of jobs
 * named jobs
-* enumeration of jobs
 
-h3. Ponies
+h3. Design
 
-I've also included
+Jobs are persisted to a tokyo tyrant backing store. Beanstalkd 
 
-* a set of God monitoring (http://god.rubyforge.org/) scripts for managing the daemons
-* command-line utilities to load. enumerate, empty, and show stats for the db+queue
-* the start of a lightweight sinatra to monitor the queue (this needs work...)
+ (No failover or discovery, but yes restarting and reloading.)
 
 
 h3. Caveats
@@ -35,8 +47,8 @@ Weaknesses? Mainly that it will make an Erlang'er cry for its lack of concurrenc
 
 h3. TODOs
 
-* Restarting is still manual
-* Right now jobs live in full in the beanstalkd. This carries a heavy memory cost but a performance gain (the alternative is to do a second query to the DB once the job has been retrieved). I'm going to make both implementations available.
+* Restarting is still manual: you have to run bin/sync.rb to reload the queue from the database
+* Right now each jobs lives in full in the beanstalkd. This carries a heavy memory cost but a performance gain (the alternative is to do a second query to the DB once the job has been retrieved). I'm going to make both implementations available.
 * The sinatra queue viewer doesn't work at the moment.
 
 h2. Requirements and Installation
@@ -65,7 +77,7 @@ h2. Why you should, or shouldn't, use Edamame
 
 **Beanstalkd**'s strengths:
 * fast 
-* loosely-ordered priority queuing (few others have this)
+* loosely-ordered **priority queuing** (few others have this)
 * multiple queues (via 'tubes')
 * reliable: jobs that time out are re-assigned
 * lightweight
@@ -129,6 +141,17 @@ Most of these are heavy-weight job queuing solutions that play nice with Rails:
 * "Spawn":http://github/tra/spawn
 
 This talk by Rob Mack on "Background Processing in Ruby on Rails":http://blog.robmack.com/2009/05/04/background_processing/ (at the April "Austin on Rails":http://austinonrails.org/ meeting) has a great overview of job queuing solutions for Rails and in general.
+
+h2. Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but
+   bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
 
 h2. Endnotes
 
