@@ -1,4 +1,3 @@
-
 Keep running:
 
 * Worker queue (beanstalkd)
@@ -20,33 +19,6 @@ Keep running:
 * http://nubyonrails.com/articles/about-this-blog-beanstalk-messaging-queue
 ** The "god.conf":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew is
    taken from there.
-
-
-h2. God
-
-  Map:
-
-  MONKEYSHINES = {
-    monkeyshines_handle => {
-      # standard args
-      :src_loc    => xx         # Defaults used if omitted or true
-      :src_type   => xx         # ""
-      :dest_loc   => xx         # ""
-      :dest_type  => xx         # ""
-      :log        => xx         # ""
-      :beanstalkd => bs_handle, # true for default, omit/nil for none
-      :tyrant     => tt_handle, # true for default, omit/nil for none
-      # plus any others you'd like to set.
-      :foo        => 'bar'
-    }, ...
-  }
-
-  BEANSTALKDS = {
-    beanstalkd_handle => { :host => xx, :port => xx, ... },  }
-
-  TYRANTS = {
-    tyrant_handle =>  { :host => xx, :port => xx, :file => xx, ... } }
-    
 
 h2. Beanstalkd
 
