@@ -1,8 +1,11 @@
+---
 permalink:      none
 markdown:       rdiscount
 pygments:       true
-maruku:
-  use_tex:      false
-  use_divs:     false
-  png_dir:      images/latex
-  png_url:      /images/latex
+auto:           true
+port:           5000
+# maruku:
+#   use_tex:      false
+#   use_divs:     false
+#   png_dir:      images/latex
+#   png_url:      /images/latex

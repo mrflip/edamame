@@ -1,0 +1,10 @@
+<div class="download">
+  <a href="http://github.com/mrflip/edamame/zipball/master"><img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+  <a href="http://github.com/mrflip/edamame/tarball/master"><img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+</div>
+
+h1(gemheader).  "edamame":http://github.com/mrflip/edamame %(small)by "mrflip":http://github.com/mrflip%
+
+p(description). Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
+
+"Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
