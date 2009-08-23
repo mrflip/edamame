@@ -10,7 +10,7 @@
    <meta name="keywords"    content="{{ page.keywords | join:"," }},{{ site.keywords | join:"," }},ruby,gem"/>
    <meta name="description" content="{{ site.description }}"/>
    <!-- <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/{{ site.gemuser }}-github-com-{{ site.gemname }}" title="{{ site.gemuser }}/{{ site.gemname }}" /> -->
-   <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="{{ site.gemuser }}/{{ site.gemname }}" />
+   <link rel="alternate" type="application/atom+xml" href="atom.xml" title="{{ site.gemuser }}/{{ site.gemname }}" />
    <link rel="shortcut icon"              href="/favicon.ico" />
    <!--[if IE]>
    <link rel="stylesheet" type="text/css" href="/css/ie.css"     media="screen, projection" />
@@ -26,7 +26,7 @@
     <a href="/">{{ site.gemuser }}/{{ site.gemname }}</a>
     &middot; <a class="extra" href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}">source code</a>
     {% for segment in site.header_files %}
-    &middot; <a class="extra" href="/{{ segment }}.html">{{ segment | downcase }}</a>
+    &middot; <a class="extra" href="{{ segment }}.html">{{ segment | downcase }}</a>
     {% endfor %}
   </div>
 
@@ -52,7 +52,7 @@
     </div>
     <div class="rss">
       <!-- http://feeds.feedburner.com/{{ site.gemuser }}-github-com-{{ site.gemname }} -->
-      <a href="/atom.xml"><img src="/images/rss.png" alt="Subscribe to RSS Feed" /></a> 
+      <a href="atom.xml"><img src="/images/rss.png" alt="Subscribe to RSS Feed" /></a> 
     </div>
     <p class="clear">Thanks to <a href="http://github.com/mojombo/">github.com/mojombo</a> for the swanky HTML layout.</p>
   </div>
