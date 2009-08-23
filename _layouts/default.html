@@ -24,8 +24,9 @@
 
 <div id="container">
   <div id="header">
-    <a href="/">{{ site.gemuser }}/{{ site.gemname }}</a>
-    &middot; <a class="extra" href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}">source code</a>
+    <a href="/">{{ site.gemuser }}</a> /
+    {% if site.gemname %}<a href="index.html">{{ site.gemname }}</a> &middot; {% endif %}
+    <a class="extra" href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}">source code</a>
     {% for segment in site.header_files %}
     &middot; <a class="extra" href="{{ segment }}{{ site.header_ref }}">{{ segment | downcase }}</a> 
     {% endfor %}
