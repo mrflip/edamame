@@ -1,37 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
+{% if page.keywords == null %}{% assign page.keywords = 'kw' %}{% endif %}    
+{% if keywords == null %}{% assign keywords = 'simple' %}{% endif %}    
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
    <title>{{ page.title }}</title>
-   <meta name="author" content="mrflip" />
+   <meta name="author"      content="mrflip" />
+   <meta name="viewport"    content="width=940" />
+   <meta name="keywords"    content="{{ page.keywords}},ruby,gem"/>
+   <meta name="description" content="{{ page.description or 'default' }}"/>
+   
    <!-- <link href="http://feeds.feedburner.com/mrflip-github-com-edamame" rel="alternate" title="mrflip" type="application/atom+xml" /> -->
+   <link href="/favicon.ico"       rel="shortcut icon" />
+   <!--[if IE]> 
+    <link href="http://assets0.infochimps.org/stylesheets/compiled/ext/ie.css?1245714377" media="screen, projection" rel="stylesheet" type="text/css" />
+   <![endif]-->
    <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
    <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+  <!--  <link href="http://assets3.infochimps.org/stylesheets/compiled/ext/print.css?1245714377" media="print" rel="stylesheet" type="text/css" /> -->
+  <!--  <link href="http://assets2.infochimps.org/stylesheets/cache/all.css?1245714378" media="screen, projection" rel="stylesheet" type="text/css" /><\!-- end _head.html.erb -\-> -->
+    
 </head>
 <body>
 
-<div class="site">
-  <div class="title">
+<div id="container">
+  <div id="header">
     <a href="/">mrflip/edamame</a>
     &middot; <a class="extra" href="http://github.com/mrflip/edamame">source code</a>
     &middot; <a class="extra" href="/news.html">news</a>
+    {{ segments }}
   </div>
   
   {{ content | textilize }}
-  
-  <div class="footer">
+
+  <div id="footer">
     <div class="contact">
       <p>
         edamame<br />
+        {{ page.keywords }}{{ keywords }}{{ foo }}
       </p>
     </div>
     <div class="contact">
       <p>
         <a href="http://github.com/mrflip/">github.com/mrflip</a><br />
         <a href="http://infochimps.org/">infochimps.org</a><br />
-        Thanks to <a href="http://github.com/mojombo/">github.com/mojombo</a> for the swanky HTML layout.<br />
       </p>
     </div>
     <div class="rss">
@@ -39,10 +54,16 @@
         <!-- <a href="http://feeds.feedburner.com/mrflip-github-com-edamame"><img src="/images/rss.png" alt="Subscribe to RSS Feed" /></a> -->
       </p>
     </div>
+    <p class="clear">Thanks to <a href="http://github.com/mojombo/">github.com/mojombo</a> for the swanky HTML layout.</p>
+
   </div>
 </div>
 
 <a href="http://github.com/mrflip"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/images/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"      type="text/javascript" ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js" type="text/javascript" ></script>
+<script src="/javascripts/application.js"                                          type="text/javascript" ></script>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -53,6 +74,5 @@ try {
 var pageTracker = _gat._getTracker("UA-3828631-3");
 pageTracker._trackPageview();
 } catch(err) {}</script>
-
 </body>
 </html>
