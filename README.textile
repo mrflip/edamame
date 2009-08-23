@@ -1,0 +1,2 @@
+
+To use these pages you'll need the assets from the http://github.com/mrflip/mrflip.github.com repo

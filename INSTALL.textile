@@ -4,7 +4,7 @@ title:  Install Notes
 ---
 {% include gemheader.html %}
 
-h1(gemheader). edamame %(small):: install%
+h1(gemheader). {{ site.gemname }} %(small):: install%
 
 <div class="toggle">
 
@@ -12,13 +12,13 @@ h2(boundary). Get the code
 
 This code is available as a gem:
 
-pre. $ sudo gem install mrflip-edamame
+pre. $ sudo gem install mrflip-{{ site.gemname }}
 
-You can instead download this project in either "zip":http://github.com/mrflip/edamame/zipball/master or "tar":http://github.com/mrflip/edamame/tarball/master formats.
+You can instead download this project in either "zip":http://github.com/mrflip/{{ site.gemname }}/zipball/master or "tar":http://github.com/mrflip/{{ site.gemname }}/tarball/master formats.
 
 Better yet, you can also clone the project with "Git":http://git-scm.com by running:
 
-pre. $ git clone git://github.com/mrflip/edamame
+pre. $ git clone git://github.com/mrflip/{{ site.gemname }}
 
 </div>
 <div class="toggle">
