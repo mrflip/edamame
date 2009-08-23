@@ -3,7 +3,6 @@ layout: default
 title:  mrflip.github.com/edamame
 collapse: false
 ---
-{% include gemheader.html %}
 
 h1(gemheader). edamame %(small):: mrflip.github.com%
 

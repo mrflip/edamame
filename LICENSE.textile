@@ -2,7 +2,6 @@
 layout: default
 title:  MIT License
 ---
-{% include gemheader.html %}
 
 h1(gemheader). edamame %(small):: license%
 

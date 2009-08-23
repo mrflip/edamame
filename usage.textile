@@ -2,7 +2,6 @@
 layout: default
 title:  Usage Notes
 ---
-{% include gemheader.html %}
 
 h1(gemheader). {{ site.gemname }} %(small):: usage%
 
