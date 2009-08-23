@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{edamame}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philip (flip) Kromer"]
@@ -24,8 +24,11 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "README.textile"
   ]
   s.files = [
-    ".gitignore",
+    ".document",
+     ".gitignore",
+     "LICENSE.textile",
      "README.textile",
+     "Rakefile",
      "VERSION",
      "app/edamame_san/config.ru",
      "app/edamame_san/config.yml",
@@ -49,6 +52,7 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "bin/stats.rb",
      "bin/sync.rb",
      "bin/test_run.rb",
+     "edamame.gemspec",
      "lib/edamame.rb",
      "lib/edamame/job.rb",
      "lib/edamame/queue.rb",
@@ -59,6 +63,8 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "lib/edamame/store/base.rb",
      "lib/edamame/store/tyrant_store.rb",
      "lib/methods.txt",
+     "spec/edamame_spec.rb",
+     "spec/spec_helper.rb",
      "utils/god/README-god.textile",
      "utils/god/beanstalkd_god.rb",
      "utils/god/edamame.god",
