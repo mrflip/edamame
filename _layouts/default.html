@@ -9,8 +9,8 @@
    <meta name="viewport"    content="width=940" />
    <meta name="keywords"    content="{{ page.keywords | join:"," }},{{ site.keywords | join:"," }},ruby,gem"/>
    <meta name="description" content="{{ site.description }}"/>
-   <!-- <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/{{ site.gemuser }}-github-com-{{ site.gemname }}" title="{{ site.gemuser }}/{{ site.gemname }}" /> -->
-   <link rel="alternate" type="application/atom+xml" href="atom.xml" title="{{ site.gemuser }}/{{ site.gemname }}" />
+   <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/{{ site.gemuser }}-github-com/{{ site.gemname }}" title="{{ site.gemuser }}/{{ site.gemname }} news" /> 
+   <link rel="alternate" type="application/atom+xml" href="atom.xml" title="{{ site.gemuser }}/{{ site.gemname }} news" />
    <link rel="shortcut icon"              href="/favicon.ico" />
    <!--[if IE]>
    <link rel="stylesheet" type="text/css" href="/css/ie.css"     media="screen, projection" />
@@ -52,6 +52,7 @@
     </div>
     <div class="rss">
       <!-- http://feeds.feedburner.com/{{ site.gemuser }}-github-com-{{ site.gemname }} -->
+      <!-- <a href="http://feeds.feedburner.com/{{ site.gemuser }}-github-com/{{ site.gemname }}" title="{{ site.gemuser }}/{{ site.gemname }} news" /> -->
       <a href="atom.xml"><img src="/images/rss.png" alt="Subscribe to RSS Feed" /></a> 
     </div>
     <p class="clear">Thanks to <a href="http://github.com/mojombo/">github.com/mojombo</a> for the swanky HTML layout.</p>
