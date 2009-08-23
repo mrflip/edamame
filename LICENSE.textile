@@ -3,7 +3,7 @@ layout: default
 title:  MIT License
 ---
 
-h1(gemheader). edamame %(small):: license%
+h1(gemheader). {{ site.gemname }} %(small):: license%
 
 <div class="toggle">
 

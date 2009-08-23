@@ -4,10 +4,10 @@ title:  mrflip.github.com/edamame
 collapse: false
 ---
 
-h1(gemheader). edamame %(small):: mrflip.github.com%
+h1(gemheader). {{ site.gemname }} %(small):: mrflip.github.com%
 
 
-p(description). Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
+p. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
 
 "Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
 
@@ -18,7 +18,7 @@ p(description). Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distribute
 * "License":LICENSE.html
 
 <div class="toggle">
-h2(boundary#description). Description
+h2(#description). Description
 
 p(heavy). Like beanstalk, edamame:
 * is *fast*, scalable, lightweight and distributed
@@ -36,7 +36,7 @@ p(heavy). Edamame includes a few nifty toys:
 * Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
 * The start of a lightweight web frontend in Sinatra.
 
-h3(boundary#authors). Authors
+h3. Authors
 
 Philip (flip) Kromer (flip@infochimps.org) 
 </div>
