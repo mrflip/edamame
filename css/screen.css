@@ -9,32 +9,48 @@
 *               { margin: 0; padding: 0; }
 html, body      { height: 100%; }
 body {
-  background-color: white;
-  font: 13.34px helvetica, arial, clean, sans-serif;
-  *font-size: small;
-  text-align: center;
+  background-color:     #f8f8f8;
+  color:                #222;
+  font:                 13.34px trebuchet ms, helvetica, arial, clean, sans-serif;
+  *font-size:           small;
+  text-align:           center;
 }
+
+.clear { clear: both; }
+.clearfix { overflow: hidden; display: inline-block; }
+.clearfix { display: block; }
+
 table {
   font-size: inherit;
   font: 100%;
 }
 h1, h2, h3      { margin-top: 1em;   }
 h4, h5, h6      { margin-top: 1em;   }
-p               { margin:     1em 0; }
+p               { margin:     1em 0 0.25em 0; line-height: 1.3em; }
+hr              { border: 0; width: 80%; border-bottom: 1px solid #aaa }
 
-h1              { font-size: 150%;        }
-h2              { font-size: 125%;        }
-h3              { font-size: 110%;        }
+a               { color: #229; text-decoration:none         }
+a:visited       { color: #629;          }
+a:hover         { color: #429; text-decoration:underline    }
+a:active        { color: #924;          }
+
+h1              { font-size: 175%;        text-align: center }
+h2              { font-size: 150%;        }
+h3              { font-size: 115%;        }
 h4, h5, h6      { font-size: 100%;        }
 h1 .small       { font-size: 75%;         }
 h1 a,h2 a,h3 a  { text-decoration: none;  }
 
+.boundary { border: 1px solid #aaa ; border-width: 0 0 1px 0 ; margin: 1.5em 0 1.0em -10px ; padding: 0 0 0.25em 10px ; text-align: left }
+
 h1              {
-  margin-bottom: 1em            ;
-  padding:       0.5em 0 0.25em ;
+  margin:        1.0em 0 1.0em  -10px  ;
+  padding:       0.5em 0 0.25em  10px;
   border:        1px solid #ddd ;
   border-width:  0 0 1px 0      ; 
 }
+blockquote {    color:        #444; }
+
 
 /*****************************************************************************/
 /*
@@ -42,40 +58,76 @@ h1              {
 /*
 /*****************************************************************************/
 
-ul, ol { margin-left: 1.25em ; }
-
+ul,      ol      { margin:     0.75em 0 1em 1.25em  ; }
+li > ul, li > ol { margin-top: 0.25em ; }
+li {            line-height: 1.25em; margin-bottom: 0.25em }
 blockquote {
   margin-left:  1.25em ;
   margin-right: 1.25em ;
-  color:        #444;
 }
 
-a               { color: #00a;          }
-a:hover         { color: black;         }
-a:visited       { color: #a0a;          }
+pre      { font-size: 95%; padding: 0.5em 1.0em        ; margin: 0.4em 0 1.25em 0 ; }
+code     { font-size: 95%; padding: 0     0.25em; }
+pre code { font-size: 100%; padding: 0; }
 
-pre { 
-  margin-left:          1.25em ;
-  padding:              0.5em;
-  font-size:            95%;
-}
-
-pre             { color: #222;   border: 1px solid #ddd;  background-color: #ddd; }
+pre             { color: #222;   border: 1px solid #ddd;  background-color: #eef; }
 code            {                border: 1px solid #ddd;  background-color: #eef; }
-pre.terminal    { color:  white; border: 1px solid black; }
-pre code          {              border: none; }
+pre.terminal    { color: white;  border: 1px solid black; }
+pre code        {                border: none;            background-color: inherit; }
 pre.terminal,
 pre.terminal code {                                       background-color: #333; }
-
-code {
-  font-size:            95%;
-  padding:              0 .2em;
-}
 
 
 /*****************************************************************************/
 /*
-/* Home
+/* Styles
+/*
+/*****************************************************************************/
+
+.heavy {
+  font-size:    110%;
+  font-weight:  bold;
+  color:        black;
+  }
+
+.meta                 { color: #aaa; }
+
+h2 { line-height:          22px; }
+.toggle h2      {
+  margin-left:         -30px;
+  padding-left:         30px;
+  line-height:          22px;
+  background: url('/images/comments.png') no-repeat 0px -30px ;
+}
+.toggle .closed { background-position-y: 0px;  }
+
+.toggle .closed:after {
+  content:              " (click to show) ";
+  font-size:            12px;
+  font-style:           italic;
+  color:                #666;
+  line-height:          12px;
+  padding: 0 ;
+  margin:  0 0 0 10px; 
+}
+
+/*****************************************************************************/
+/*
+/* Gem
+/*
+/*****************************************************************************/
+
+h1.gemheader         { margin: 50px 0 0.5em 0; height: 35px ; text-align: left }
+h1.gemheader         { font-size: 3.5em ;  }
+h1.gemheader>.small  { font-size: 0.5em }
+.download            { float: right; }
+.description         { font-size: 1.2em; font-weight: bold;}
+/* #footer       { text-align:center; padding-top:30px;    font-style: italic; } */
+
+
+/*****************************************************************************/
+/*
+/* Posts
 /*
 /*****************************************************************************/
 
@@ -100,70 +152,34 @@ ul.posts span {
 /*
 /*****************************************************************************/
 
-.site {
+#container {
   font-size:            110%;
   text-align:           justify;
   width:                40em;
-  margin:               3em auto 2em auto;
+  margin:               0 auto 2em auto;
   line-height:          1.5em;
 }
 
-.title {
-  color: #a00;
-  font-weight: bold;
-  margin-bottom: 2em;
-}
+#header               { margin: 1.5em 0 2em 0; }
+#header a             { margin-left:  0.5em; margin-right: 0.5em; }
 
-.site .title a {
-  color: #a00;
-  text-decoration: none;
-  margin-left:  0.5em;
-  margin-right: 0.5em;
-}
+#header               { color: #a00;  font-weight: bold;     font-size: 115% ; }
+#header a             { color: #a00;  text-decoration: none; }
+#header a:hover       { color: black; }
+#header a.extra       { color: #aaa;  text-decoration: none;}
+#header a.extra:hover { color: black; }
 
-.site .title a:hover {
-  color: black;
-}
-
-.site .title a.extra {
-  color: #aaa;
-  text-decoration: none;
-}
-
-.site .title a.extra:hover {
-  color: black;
-}
-
-.site .meta {
-  color: #aaa;
-}
-
-.site .footer {
+#footer {
   font-size: 80%;
-  color: #666;
   border-top: 4px solid #eee;
   margin-top: 2em;
   overflow: hidden;
 }
-
-.site .footer .contact {
-  float: left;
-  margin-right: 3em;
-}
-
-.site .footer .contact a {
-  color: #8085C1;
-}
-
-.site .footer .rss {
-  margin-top: 1.1em;
-  margin-right: -.2em;
-  float: right;
-}
-
-.site .footer .rss img {
-  border: 0;
-}
+#footer .contact a { color: #666;    }
+#footer .contact a { color: #8085C1; }
+#footer .contact   { float: left;   margin-right: 3em;}
+#footer .rss       { float: right;  margin-right: -.2em;  margin-top: 1.1em; }
+#footer .rss img   { border: 0;     }
 
 /*****************************************************************************/
 /*
@@ -172,15 +188,6 @@ ul.posts span {
 /*****************************************************************************/
 
 #post {
-
 }
-
-/* standard */
-
-#related {
-  margin-top: 2em;
-}
-
-#related h2 {
-  margin-bottom: 1em;
-}
+#related        {  margin-top:    2em; }
+#related h2     {  margin-bottom: 1em; }
