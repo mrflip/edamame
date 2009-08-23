@@ -1,10 +1,12 @@
 ---
 layout: default
-title:  mrflip.github.com/edamame
+title:  Install Notes
 ---
-{% include gemheader.textile %}
+{% include gemheader.html %}
 
-h1. Install
+h1(gemheader). edamame %(small):: install%
+
+<div class="toggle">
 
 h2(boundary). Get the code
 
@@ -18,21 +20,26 @@ Better yet, you can also clone the project with "Git":http://git-scm.com by runn
 
 pre. $ git clone git://github.com/mrflip/edamame
 
+</div>
+<div class="toggle">
+
 h2(boundary). Get the Dependencies
 
 * Beanstalk
 ** "libevent 1.4":http://monkey.org/~provos/libevent/ 
 ** "beanstalkd 1.3":http://xph.us/dist/beanstalkd/ 
 ** "beanstalk-client":http://github.com/dustin/beanstalk-client
+
 * Tokyo Tyrant
 ** "Tokyo Tyrant":http://tokyocabinet.sourceforge.net/tyrantdoc/
 ** "Tokyo Tyrant Ruby libs":http://tokyocabinet.sourceforge.net/tyrantrubydoc/
 ** "Tokyo Cabinet":http://tokyocabinet.sourceforge.net
 ** "Tokyo Cabinet Ruby libs":http://tokyocabinet.sourceforge.net/tyrantdoc/
+
 * "wukong gem":http://github.,com/mrflip/wukong
 ** (this dependency will go away)
 
-If you're daring:
+h3. If you're daring:
 
 <pre>
     cd /usr/local/src/ ;
@@ -43,35 +50,13 @@ If you're daring:
 
 and
 
-<div class="highlight">
-{% highlight sh %}
+<pre>
     cd /usr/local/src/ ;
     ttbase=http://downloads.sourceforge.net/sourceforge/tokyocabinet
     pkg=tokyocabinet-1.4.29    ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
     pkg=tokyotyrant-1.1.30     ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ./configure --prefix=/usr/local && make -j2 && sudo make install ) ;
     pkg=tokyocabinet-ruby-1.27 ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && ruby extconf.rb                 && make -j2 && sudo make install ) ;
     pkg=tokyotyrant-ruby-1.10  ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && sudo ruby install.rb ) ;
-{% endhighlight %}
-
-
-{% highlight javascript %}
-
-jQuery.fn.accordion = function(){
-  $(this).toggleClass("closed");
-  $(this).parent(".toggle").find('> :not(h2)').toggle();
-  console.log("clicked");
-}
-
-
-// ***************************************************************************
-//
-//   Load all this stuff
-//
-$(document).ready(function(){
-  $(".toggle h2").click(function(){ $(this).accordion(); });
-  // $(".toggle h2").accordion();
-
-});
-{% endhighlight %}
+</pre>
 
 </div>

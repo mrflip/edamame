@@ -16,9 +16,15 @@ body {
   text-align:           center;
 }
 
-.clear { clear: both; }
-.clearfix { overflow: hidden; display: inline-block; }
-.clearfix { display: block; }
+#container {
+  font-size:            110%;
+  text-align:           justify;
+  width:                780px;
+  margin:               0 auto 2em auto;
+  line-height:          1.5em;
+}
+
+.clear    { clear: both; height: 0; overflow: hidden; display: block; }
 
 table {
   font-size: inherit;
@@ -41,7 +47,7 @@ h4, h5, h6      { font-size: 100%;        }
 h1 .small       { font-size: 75%;         }
 h1 a,h2 a,h3 a  { text-decoration: none;  }
 
-.boundary { border: 1px solid #aaa ; border-width: 0 0 1px 0 ; margin: 1.5em 0 1.0em -10px ; padding: 0 0 0.25em 10px ; text-align: left }
+h2 { border: 1px solid #aaa ; border-width: 0 0 1px 0 ; margin: 1.5em 0 1.0em -10px ; padding: 0 0 0.25em 10px ; text-align: left }
 
 h1              {
   margin:        1.0em 0 1.0em  -10px  ;
@@ -66,8 +72,11 @@ blockquote {
   margin-right: 1.25em ;
 }
 
-pre      { font-size: 95%; padding: 0.5em 1.0em        ; margin: 0.4em 0 1.25em 0 ; }
-code     { font-size: 95%; padding: 0     0.25em; }
+pre {
+  line-height: 1.33em;
+  }
+pre      { font-size: 85%; padding: 0.5em 1.0em        ; margin: 0.4em 0 1.25em 0 ; }
+code     { font-size: 85%; padding: 0     0.25em; }
 pre code { font-size: 100%; padding: 0; }
 
 pre             { color: #222;   border: 1px solid #ddd;  background-color: #eef; }
@@ -93,13 +102,14 @@ pre.terminal code {                                       background-color: #333
 .meta                 { color: #aaa; }
 
 h2 { line-height:          22px; }
+  
 .toggle h2      {
-  margin-left:         -30px;
+  margin-left:         0px;
   padding-left:         30px;
   line-height:          22px;
   background: url('/images/comments.png') no-repeat 0px -30px ;
 }
-.toggle .closed { background-position-y: 0px;  }
+.toggle .closed { background-position: 0px 0px ; }
 
 .toggle .closed:after {
   content:              " (click to show) ";
@@ -117,10 +127,25 @@ h2 { line-height:          22px; }
 /*
 /*****************************************************************************/
 
-h1.gemheader         { margin: 50px 0 0.5em 0; height: 35px ; text-align: left }
-h1.gemheader         { font-size: 3.5em ;  }
-h1.gemheader>.small  { font-size: 0.5em }
-.download            { float: right; }
+.download            { height:  72px ; float: right;
+  border:        1px solid #ddd ;
+  border-width:  0 0 1px 0      ; 
+
+                     }
+h1.gemheader {
+  margin:       0px 0 0.5em -38px ; 
+  font-size:    50px ; line-height: 1.0 ; 
+  height:       72px ;
+  padding:      20px 0 14px 0px; 
+  text-indent:  38px ; 
+  background:   url('/images/edamame-72.png') no-repeat 0px 23px ;
+  border:       0px none #fff;
+  text-align:   left ; 
+  /* background-color: #fee ; */
+  }
+/* .edamame {  float:left ; height: 92px ; width:350px; margin-left: -40px ; padding-left: 40px; padding-bottom: 20px ;  background: url('/images/edamame-72.png') no-repeat 0px 25px ;} */
+h1.gemheader>.small  { font-size: 0.60em }
+h1.gemheader a       { color: black; text-decoration: none; }
 .description         { font-size: 1.2em; font-weight: bold;}
 /* #footer       { text-align:center; padding-top:30px;    font-style: italic; } */
 
@@ -130,16 +155,13 @@ h1.gemheader>.small  { font-size: 0.5em }
 /* Posts
 /*
 /*****************************************************************************/
-
 ul.posts {
   list-style-type: none;
   margin-bottom: 2em;
 }
-
 ul.posts li {
   line-height: 1.75em;
 }
-
 ul.posts span {
   color: #aaa;
   font-family: Monaco, "Courier New", monospace;
@@ -152,17 +174,8 @@ ul.posts span {
 /*
 /*****************************************************************************/
 
-#container {
-  font-size:            110%;
-  text-align:           justify;
-  width:                40em;
-  margin:               0 auto 2em auto;
-  line-height:          1.5em;
-}
-
-#header               { margin: 1.5em 0 2em 0; }
+#header               { margin: 1.5em 0 2em 0; clear: both ; }
 #header a             { margin-left:  0.5em; margin-right: 0.5em; }
-
 #header               { color: #a00;  font-weight: bold;     font-size: 115% ; }
 #header a             { color: #a00;  text-decoration: none; }
 #header a:hover       { color: black; }
@@ -177,9 +190,12 @@ ul.posts span {
 }
 #footer .contact a { color: #666;    }
 #footer .contact a { color: #8085C1; }
-#footer .contact   { float: left;   margin-right: 3em;}
-#footer .rss       { float: right;  margin-right: -.2em;  margin-top: 1.1em; }
+#footer .contact   { float: left;   margin-right: 3em;    margin-top: 0.5em; display: block;  }
+#footer .rss       { float: right;  margin-right: -.2em;  margin-top: 1.33em; }
 #footer .rss img   { border: 0;     }
+
+.list.aligned   a { width: 80px ; display: inline-block ; }
+.list.aligned60 a { width: 60px ; display: inline-block ; }
 
 /*****************************************************************************/
 /*

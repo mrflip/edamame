@@ -3,9 +3,28 @@ permalink:      none
 markdown:       rdiscount
 pygments:       true
 auto:           true
-port:           5000
-# maruku:
-#   use_tex:      false
-#   use_divs:     false
-#   png_dir:      images/latex
-#   png_url:      /images/latex
+server:         true
+server_port:    4000
+maruku:
+  use_tex:      false
+  use_divs:     false
+  png_dir:      images/latex
+  png_url:      /images/latex
+
+
+title:          mrflip.github.com/edamame
+
+keywords:       [ 'edamame,beanstalk,beanstalkd,ruby,mrflip,infochimps,persistent,database,queue,queuing,system,sqs,rabbitmq,rails,job,distributed,tokyo,tyrant,cabinet' ]
+
+description:
+  Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue implemented in Ruby.
+
+header_files:
+  - INSTALL
+  - usage
+  - alternatives
+  - LICENSE
+
+gemuser:        mrflip
+gemname:        edamame
+gemversion:     0.1.0

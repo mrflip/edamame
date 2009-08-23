@@ -19,12 +19,6 @@ a {
   color: #0000FF;
 }
 
-.clear {
-  clear: both;
-  height: 0;
-  overflow: hidden;
-}
-
 #container {
   width: 75%;
   margin: 0 auto;

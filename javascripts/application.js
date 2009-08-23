@@ -11,6 +11,5 @@ jQuery.fn.accordion = function(){
 //
 $(document).ready(function(){
   $(".toggle h2").click(function(){ $(this).accordion(); });
-  // $(".toggle h2").accordion();
-
+    // $(".toggle h2").accordion();
 });

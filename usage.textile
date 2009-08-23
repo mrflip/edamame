@@ -1,0 +1,78 @@
+---
+layout: default
+title:  MIT License
+---
+{% include gemheader.html %}
+
+h1(gemheader). edamame %(small):: usage%
+
+<div class="toggle">
+h2. Design
+
+Jobs are persisted to a tokyo tyrant backing store. Beanstalkd 
+
+(No failover or discovery, but yes restarting and reloading.)
+
+</div>
+<div class="toggle">
+
+h2. Caveats
+
+Weaknesses? Mainly that it will make an Erlang'er cry for its lack of concurrency correctness. Its goal is to work pretty well and to recover gracefully, but its design limits .
+
+* We store jobs in two places: the central DB and the distributed queue.
+
+* As always, your jobs must either be idempotent, or harmless if re-run: a job could start and do some or all of its job -- but lose contact with the queue, causing the job to be re-run. This is inherent in beanstalkd (and most comparable solutions), not just edamame.
+
+* Although God
+
+</div>
+<div class="toggle">
+
+h2. TODOs
+
+* Restarting is still manual: you have to run bin/sync.rb to reload the queue from the database
+* Right now each jobs lives in full in the beanstalkd. This carries a heavy memory cost but a performance gain (the alternative is to do a second query to the DB once the job has been retrieved). I'm going to make both implementations available.
+* The sinatra queue viewer doesn't work at the moment.
+* Tests :-/
+
+</div>
+<div class="toggle">
+
+h2. Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a future version unintentionally.
+* Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but  bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+</div>
+
+<div class="toggle">
+
+h2. Endnotes
+
+* If it's not obvious: beanstalk + tokyo = "edamame,":http://en.wikipedia.org/wiki/Edamame a tasty Japanese appetizer.
+* You might enjoy the "Monkeyshines":http://bit.ly/shines distributed API scraper, which this library was written to support.
+* Beanstalk:
+** "Beanstalk, a fast, distributed, in-memory workqueue service":http://xph.us/software/beanstalkd/
+** "Beanstalkd code":http://github.com/kr/beanstalkd/tree/master
+** "FAQ":http://wiki.github.com/kr/beanstalkd/faq
+** "Beanstalk Ruby Client":http://github.com/dustin/beanstalk-client-ruby/tree/master
+** "Tutorial from nubyonrails":http://nubyonrails.com/articles/about-this-blog-beanstalk-messaging-queue
+** "Mailing list":http://www.mail-archive.com/beanstalk-talk@googlegroups.com/
+** Some "beanstalk utilities":http://github.com/dustin/beanstalk-tools/tree/master -- edamame has its own take on some of these.
+
+* Tokyo Tyrant:
+** "Tokyo Tyrant":http://tokyocabinet.sourceforge.net/tyrantdoc/
+** "Tokyo Tyrant Ruby libs":http://tokyocabinet.sourceforge.net/tyrantrubydoc/
+** You'll need the "Tokyo Cabinet":http://tokyocabinet.sourceforge.net libs and the "Tokyo Cabinet Ruby libs":http://tokyocabinet.sourceforge.net/tyrantdoc/
+
+* "God process monitoring framework":http://god.rubyforge.org/
+** http://railscasts.com/episodes/130-monitoring-with-god
+** Some code for the god conf is inspired by that railscast, "this pastie,":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew the "one from the god docs":http://god.rubyforge.org/, and "Configuring GMail notifiers in God":http://millarian.com/programming/ruby-on-rails/monitoring-thin-using-god-with-google-apps-notifications/
+** Alternatives to God include (in order of complexity): "Monit,":http://mmonit.com/monit/ perhaps "with Munin;":http://www.howtoforge.com/server_monitoring_monit_munin "Cacti":http://www.cacti.net/ and "Hyperic":http://www.hyperic.com/
+
+</div>
+

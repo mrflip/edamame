@@ -1,0 +1,88 @@
+---
+layout: default
+title:  MIT License
+---
+{% include gemheader.html %}
+
+h1(gemheader). edamame %(small):: alternatives%
+
+h1. Why you should, or shouldn't, use Edamame
+
+<div class="toggle">
+
+h2. Beanstalk / edamame's strengths and weaknesses
+
+**Beanstalkd**'s strengths:
+* fast 
+* loosely-ordered **priority queuing** (few others have this)
+* multiple queues (via 'tubes')
+* reliable: jobs that time out are re-assigned
+* lightweight
+* distributed
+* scalable up to your memory limits
+* simple implementation
+* simple wire protocol and thus tons of language libraries
+
+It lacks
+* persistence
+* security (via, e.g., signed jobs)
+* failover / high availability
+* discovery of new instances
+
+**Edamame** adds persistence and (with the God scripts) 'good-enough availability' (note that it still lacks discovery). It also introduces a bit of complexity and some risk of inconsistent state or duplicated jobs (see above).
+
+</div><div class="toggle">
+
+h2. Other distributed queues
+
+p. RabbitMQ, Kestrel and Amazon's SQS seem to be the best industrial-strength distributed queue systems. Note that they are messaging queues and lack some of the specifically job queuing features of Beanstalk.
+
+h3. "RabbitMQ":http://www.rabbitmq.com/
+
+* fast
+* FIFO message queue: poor job support
+* ?? NO multiple queues
+* ?? NO reliable: jobs that time out are re-assigned
+* lightweight
+* distributed
+* scalable up to your memory limits
+* Uses the industrial strength AMPQ protocol
+* HA, failover, discovery
+* Strong support for Python and  .  Libraries with weak documentation exist in most other languages.
+
+h3. "Kestrel,":http://github.com/robey/kestrel/tree/master a reimplementation of Starling
+
+* fast
+* Scheduling is loosely-ordered FIFO (no priority)
+* multiple queues (via 'tubes').
+* reliable: jobs that time out are re-assigned
+* lightweight
+* distributed
+* scalable up to your memory limits
+* persistent *and* journaled
+* Written in Scala (Java). Uses memcached protocol: more or less perfectly cross-platform.
+* Documentation is sparse, though Starling's and Memcached's have most of what you need.
+* Note that Starling lacks many of these features; Kestrel makes a better job queue and should be a functional replacement
+* see: "Kestrel on github":http://github.com/robey/kestrel - "Kestrel announcement":http://robey.lag.net/2008/11/27/scarling-to-kestrel.html
+
+h3. "Amazon SQS":http://aws.amazon.com/sqs/
+
+* Not as fast
+* Costs money -- equeuing and dequeuing 1M requests costs $2.00 for reqs; if your server is not on AWS then you'll pay data charges, an additional ($0.27 per kB per million jobs).
+
+This "comparison of message queues":http://wiki.secondlife.com/wiki/Message_Queue_Evaluation_Notes describes one group's opinionated survey of the industrial strenght distributed messaging queue ecosystem. Note carefully their criteria; ours were quite different, hence edamame.
+
+</div><div class="toggle">
+
+h2. Other worker queues
+
+Most of these are heavy-weight job queuing solutions that play nice with Rails:
+
+* "BackgroundJob":http://codeforpeople.rubyforge.org/svn/bj/trunk/README
+* "BackgroundRB":http://backgroundrb.rubyforge.org/
+* "Delayed Job":http://github.com/tobi/delayed_job/
+* "Workling":http://github.com/purzelrakete/workling/ ("Starling and Workling":http://railscasts.com/episodes/128-starling-and-workling)
+* "Spawn":http://github/tra/spawn
+
+This talk by Rob Mack on "Background Processing in Ruby on Rails":http://blog.robmack.com/2009/05/04/background_processing/ (at the April "Austin on Rails":http://austinonrails.org/ meeting) has a great overview of job queuing solutions for Rails and in general.
+</div>

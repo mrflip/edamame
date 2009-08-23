@@ -1,4 +1,13 @@
-h1. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
+---
+layout: default
+title:  MIT License
+---
+{% include gemheader.html %}
+
+h1(gemheader). edamame: usage
+
+
+h2. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
 
 "Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
 
