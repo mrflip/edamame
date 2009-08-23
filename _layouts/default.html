@@ -9,8 +9,8 @@
    <meta name="viewport"    content="width=940" />
    <meta name="keywords"    content="{{ page.keywords | join:"," }},{{ site.keywords | join:"," }},ruby,gem"/>
    <meta name="description" content="{{ site.description }}"/>
-   <!-- <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/{{ site.gemuser }}-github-com/{{ site.gemname }}" title="{{ site.gemuser }}/{{ site.gemname }} news" />  -->
-   <link rel="alternate" type="application/atom+xml" href="atom.xml" title="{{ site.gemuser }}/{{ site.gemname }} news" />
+   <!-- <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/mrflip-github-com/{{ site.gemname }}" title="mrflip/{{ site.gemname }} news" />  -->
+   <link rel="alternate" type="application/atom+xml" href="atom.xml" title="mrflip/{{ site.gemname }} news" />
    <link rel="shortcut icon"              href="favicon.ico" />
    <!--[if IE]>
    <link rel="stylesheet" type="text/css" href="{{ site.assets_path }}css/ie.css"     media="screen, projection" />
@@ -32,7 +32,9 @@
     {% endfor %}
   </div> 
 
-  <div class="download"><a href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}/zipball/master"><img border="0" width="72" src="/images/zip.png"></a><a href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}/tarball/master"><img border="0" width="72" src="/images/tar.png"></a><a href="http://gems.github.com/gems/{{ site.gemuser }}-{{ site.gemname }}-{{ site.gemversion }}.gem"><img border="0" width="72" src="/images/gem.png"></a></div>
+  {% if site.gemname %}
+    <div class="download"><a href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}/zipball/master"><img border="0" width="72" src="/images/zip.png"></a><a href="http://github.com/{{ site.gemuser }}/{{ site.gemname }}/tarball/master"><img border="0" width="72" src="/images/tar.png"></a><a href="http://gems.github.com/gems/{{ site.gemuser }}-{{ site.gemname }}-{{ site.gemversion }}.gem"><img border="0" width="72" src="/images/gem.png"></a></div>
+  {% endif %}
   {{ content | textilize }}
 
   <br class="clear">
