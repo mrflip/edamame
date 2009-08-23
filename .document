@@ -1,0 +1,8 @@
+README.textile
+LICENSE.textile
+features/**/*.feature
+app/**/*
+bin/*
+lib/**/*.rb
+spec/**/*
+utils/**/*
