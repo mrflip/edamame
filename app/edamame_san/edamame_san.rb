@@ -56,7 +56,7 @@ class EdamameSan < Sinatra::Base
         )
       p edamame_job.to_hash
       @dest_store.set obj.query_term, edamame_job
-      break if ((iter+=1) > 10)
+      (iter+=1) ; break if (iter > 10)
     end
     haml :load
   end

@@ -85,12 +85,11 @@ module Edamame
     end
   end
 
-  Job = Struct.new(
+  class Job < Struct.new(
     :tube, :priority, :ttr, :state,
     :scheduling, :obj
     )
-
-  Job.class_eval do
+    # Job.class_eval do
     include JobCore
 
     DEFAULT_OPTIONS = {
@@ -111,7 +110,7 @@ module Edamame
         self.scheduling = Scheduling.from_hash(scheduling_hash) if scheduling_hash
       when Hash
         self.scheduling = Scheduling.from_hash(scheduling)
-      end
+      else raise "Can't build a Scheduling from #{self.scheduling}" ;  end
       if self.obj.is_a?(String)        then self.obj        = YAML.load(self.obj)        rescue nil ; end
     end
 
