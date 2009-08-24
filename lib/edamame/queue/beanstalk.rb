@@ -94,8 +94,11 @@ module Edamame
         beanstalk.stats.select{|k,v| k =~ /jobs/}
       end
       # Total jobs in the queue, whether reserved, ready, buried or delayed.
-      def total_jobs
-        [:reserved, :ready, :buried, :delayed].inject(0){|sum,type| sum += stats["current-jobs-#{type}"]}
+      def current_jobs
+        beanstalk.
+          stats.
+          select{|k,v| (k =~ /jobs/) && (k != 'total-jobs')}.
+          inject(0){|sum,kv| sum += kv.last }
       end
 
       #
@@ -107,10 +110,10 @@ module Edamame
         curr_watches = beanstalk.list_tubes_watched.values.first
         beanstalk.use   tube if tube
         beanstalk.watch tube if tube
-        p ["emptying", tube, beanstalk_total_jobs]
+        p ["emptying", tube, current_jobs]
         loop do
           kicked = beanstalk.open_connections.map{|conxn| conxn.kick(20) }
-          break if (beanstalk_total_jobs == 0) || (!beanstalk.peek_ready)
+          break if (current_jobs == 0) || (!beanstalk.peek_ready)
           qjob = reserve(5) or break
           yield qjob
           qjob.delete

@@ -174,20 +174,3 @@ module Edamame
     end
   end
 end
-
-module Wuclan
-  module Domains
-    module Twitter
-      module Scrape
-        TwitterSearchJob = Struct.new(
-          :query_term,
-          :priority,
-          :prev_items,
-          :prev_rate,
-          :prev_span_min,
-          :prev_span_max
-          )
-      end
-    end
-  end
-end

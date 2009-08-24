@@ -110,8 +110,9 @@ module Edamame
         self.scheduling = Scheduling.from_hash(scheduling_hash) if scheduling_hash
       when Hash
         self.scheduling = Scheduling.from_hash(scheduling)
-      else raise "Can't build a Scheduling from #{self.scheduling}" ;  end
-      if self.obj.is_a?(String)        then self.obj        = YAML.load(self.obj)        rescue nil ; end
+      # else it should behave like a scheduling
+      end
+      if self.obj.is_a?(String) then self.obj = YAML.load(self.obj) rescue nil ; end
     end
 
     def delay
