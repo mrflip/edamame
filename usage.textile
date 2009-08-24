@@ -36,6 +36,19 @@ h2. TODOs
 
 </div><div class="toggle">
 
+h2. Performance
+
+From a production server:
+
+<pre>
+  %CPU %MEM     VSZ    RSS    Command
+  0.2  0.5   231044  67424  /usr/local/bin/ttserver -host 0.0.0.0 -port 11212 -log /var/log/god/ttyrant_11212.log /data/distdb/flat_delay_queue.tct
+  0.1  6.4   798440 783580  /usr/local/bin/beanstalkd -l 0.0.0.0 -p 11210 -z 65535
+</pre
+
+With about 1M jobs in the db+queue, beanstalkd is taking up about 800MB memory and tyrant less than 100MB.  (This is with the full job object stored in the queue: memory pig but faster)
+
+
 h2. Note on Patches/Pull Requests
 
 * Fork the project.
