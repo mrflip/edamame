@@ -54,16 +54,30 @@ module Edamame
       end
     end
 
-    class Rescheduling < Base
-      has_members :period, :total_items, :goal_items, :prev_max
-
-      cattr_accessor :min_resched_delay, :max_resched_delay
-      self.min_resched_delay = 10
-      self.max_resched_delay = 24*60*60
+    #
+    # A recurring task
+    #
+    # * Run every once in a while -- often enough that you don't miss anything
+    #
+    #   want to scrape everything between now and prev_item
+    #
+    # * at the previous run, objects up to prev_time and prev_id
+    # * in the current run,  objects up to curr_time and curr_id
+    # * average rate
+    #
+    class Recurring < Base
+      has_members :period, :prev_max
       def delay
         period
       end
     end
+
+
+      # :total_items, :goal_items,
+      # cattr_accessor :min_resched_delay, :max_resched_delay
+      # self.min_resched_delay = 10
+      # self.max_resched_delay = 24*60*60
+
   end
 
 end
