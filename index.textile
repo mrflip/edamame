@@ -4,7 +4,7 @@ title:  mrflip.github.com/edamame
 collapse: false
 ---
 
-h1(gemheader). {{ site.gemname }} %(small):: mrflip.github.com%
+h1(gemheader). {{ site.gemname }} %(small):: job queue%
 
 
 p. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
