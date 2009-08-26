@@ -146,7 +146,7 @@ module Edamame
     #
     #
     def log line
-      Monkeyshines.logger.info line
+      Log.info line
     end
   end
 

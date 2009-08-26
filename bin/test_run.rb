@@ -10,5 +10,5 @@ broker = Edamame::Broker.new(
   )
 
 broker.work do |job|
-  Monkeyshines.logger.info [job, job.scheduling, job.stats, job.obj].inspect
+  Log.info [job, job.scheduling, job.stats, job.obj].inspect
 end
