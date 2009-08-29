@@ -1,0 +1,6 @@
+require 'edamame/monitoring/god_process'
+require 'edamame/monitoring/god_email'
+require 'edamame/monitoring/beanstalkd_god'
+require 'edamame/monitoring/tyrant_god'
+require 'edamame/monitoring/sinatra_god'
+require 'edamame/monitoring/god_site_config'
