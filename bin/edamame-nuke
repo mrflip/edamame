@@ -3,13 +3,18 @@ $: << File.dirname(__FILE__)+'/../../lib'
 require 'rubygems'
 require 'edamame'
 require 'monkeyshines/monitor'
+require 'monkeyshines/utils/trollop'
+require File.dirname(__FILE__)+'/edamame_util_opts'
 
-pq = Edamame::PersistentQueue.new(
-  :queue => { :type => 'BeanstalkQueue', :uris => ['localhost:11210'] },
-  :store => { :type => 'TyrantStore',    :uri =>            ':11212'  }
+pq = Edamame::PersistentQueue.new( :tube => CONFIG[:tube],
+  :queue => { :type => 'BeanstalkQueue', :uris => [CONFIG[:queue]] },
+  :store => { :type => 'TyrantStore',    :uri =>   CONFIG[:store]  }
   )
 
 periodic_log = Monkeyshines::Monitor::PeriodicLogger.new(:iters => 1000, :time => 30)
 pq.queue.empty_all do |job|
   periodic_log.periodically{ [ job.tube, job.priority, job.delay, job.scheduling, job.obj['key'] ] }
+end
+pq.store.each do |key, val|
+  pq.store.db.out key
 end

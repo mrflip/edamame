@@ -20,7 +20,8 @@ module Edamame
   module JobCore
 
     def key
-      [ tube, obj[:key]||obj['key'] ].join('-')
+      key = (obj.respond_to?(:key) ? obj.key : (obj[:key]||obj['key']))
+      [ tube, key ].join('-')
     end
 
     #
@@ -121,8 +122,8 @@ module Edamame
 
     def to_hash flatten=true
       hsh = super()
-      hsh["scheduling"] = scheduling.to_hash
-      hsh["obj"]        = obj.to_hash
+      hsh["scheduling"]   = scheduling.to_hash
+      hsh["obj"]          = obj.to_hash
       if flatten
         hsh["scheduling"] = hsh['scheduling'].to_yaml
         hsh["obj"]        = hsh['obj'].to_yaml
