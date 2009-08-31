@@ -44,8 +44,8 @@ module Edamame
       end
 
       def get(key)      db[key]         end
+      def [](key)       get(key)        end
       def put(key, val) db.put key, val end
-      def [](key)       db[key]         end
       def close()       db.close        end
       def size()        db.size         end
       def delete(key)   db.delete(key)  end

@@ -46,15 +46,20 @@ module Edamame
     end
 
     # Retrieve named record
-    def get key
-      Edamame::Job.from_hash store.get(key)
+    def get key, klass=nil
+      klass ||= Edamame::Job
+      hsh = store.get(key) or return
+      klass.from_hash hsh
     end
 
     #
     # Request a job fom the queue for processing
     #
-    def reserve timeout=nil
-      job = queue.reserve(timeout)
+    def reserve timeout=nil, klass=nil
+      qjob     = queue.reserve(timeout) or return
+      job      = get(qjob.key, klass)   or return
+      job.qjob = qjob
+      job
     end
 
     #
@@ -62,7 +67,7 @@ module Edamame
     #
     def delete job
       store.delete job.key
-      queue.delete job
+      queue.delete job.qjob
     end
 
     #
@@ -73,15 +78,7 @@ module Edamame
     def release job
       job.update!
       store.save    job
-      queue.release job, job.priority, job.scheduling.delay
-    end
-
-    #
-    # Shelves the job.
-    #
-    def bury job
-      store.bury job
-      queue.bury job
+      queue.release job.qjob, job.priority, job.scheduling.delay
     end
 
     #
@@ -90,9 +87,9 @@ module Edamame
     # all jobs -- active, inactive, running, etc -- are returned,
     # and in some arbitrary order.
     #
-    def each *args, &block
-      store.each do |key, job_hsh|
-        yield Edamame::Job.from_hash(job_hsh)
+    def each klass=nil, &block
+      store.each_as(klass) do |key, job|
+        yield job
       end
     end
 
@@ -136,9 +133,8 @@ module Edamame
     # The queue must be emptied of all jobs before running this command:
     # otherwise jobs will be duplicated.
     #
-    def unhoard &block
-      store.each do |key, hsh|
-        job = Edamame::Job.from_hash hsh
+    def unhoard klass=nil, &block
+      each(klass) do |job|
         self.tube = job.tube
         yield(job) if block
         queue.put job, job.priority, IMMEDIATELY
@@ -167,11 +163,10 @@ module Edamame
     def log_job job, *stuff
       log [job.tube, job.priority, job.delay, job.obj['key'], *stuff].flatten.join("\t")
     end
-    def work timeout=10, &block
+    def work timeout=nil, klass=nil, &block
       loop do
-        job    = reserve(timeout) or break
+        job    = reserve(timeout, klass) or break
         result = block.call(job)
-        job.update!
         reschedule job
       end
     end

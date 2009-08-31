@@ -43,8 +43,7 @@ module Edamame
         db.has_key? *args
       end
 
-    end #class
-
+    end # TyrantStore
   end
 end
 

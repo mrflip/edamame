@@ -26,47 +26,46 @@ module Edamame
       end
 
       #
-      # Add a new Job to the queue
+      # Add a new Qjob to the queue
       #
       def put job, priority=nil, delay=nil
-        beanstalk.yput(job.to_hash(false),
-          (priority || job.priority), (delay || job.delay), job.ttr)
+        beanstalk.put(job.key, (priority || job.priority), (delay || job.delay), job.ttr)
       end
 
       #
-      # Remove the job from the queue.
+      # Remove the qjob from the queue.
       #
-      def delete(job)
-        job.delete
+      def delete(qjob)
+        qjob.delete
       end
 
       #
-      # Returns the job to the queue, to be re-run later.
+      # Returns the qjob to the queue, to be re-run later.
       #
-      # release'ing a job acknowledges it was completed, successfully or not
+      # release'ing a qjob acknowledges it was completed, successfully or not
       #
-      def release job, priority=nil, delay=nil
-        job.release( (priority || job.priority), (delay || job.delay) )
+      def release qjob, priority=nil, delay=nil
+        qjob.release( (priority || qjob.priority), (delay || qjob.delay) )
       end
 
       #
-      # Take the next (highest priority, delay met) job.
+      # Take the next (highest priority, delay met) qjob.
       # Set timeout (default is 10s)
       # Returns nil on error or timeout. Interrupt error passes through
       #
       def reserve timeout=10
         begin
-          job = beanstalk.reserve(timeout) or return
+          qjob = beanstalk.reserve(timeout) or return
         rescue Beanstalk::TimedOut => e ; warn e.to_s ; sleep 0.4 ; return ;
         rescue StandardError => e       ; warn e.to_s ; sleep 1   ; return ; end
-        job
+        qjob
       end
 
       #
-      # Shelves the job.
+      # Shelves the qjob.
       #
       def bury
-        job.bury job.priority
+        qjob.bury qjob.priority
       end
 
       # The beanstalk pool which acts as job queue

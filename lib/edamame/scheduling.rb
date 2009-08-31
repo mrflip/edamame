@@ -31,10 +31,7 @@ module Edamame
     end
 
     class Every < Base
-      has_member :period
-      def delay
-        period
-      end
+      has_member :delay
     end
 
     class At < Base
@@ -66,10 +63,7 @@ module Edamame
     # * average rate
     #
     class Recurring < Base
-      has_members :period, :prev_max
-      def delay
-        period
-      end
+      has_members :delay, :prev_max, :prev_items, :prev_items_rate
     end
 
 
