@@ -1,13 +1,15 @@
-require 'wukong/extensions'
-require 'monkeyshines/utils/logger'
-require 'monkeyshines/utils/factory_module'
 require 'beanstalk-client'
+require 'wukong/extensions'
+require 'monkeyshines/utils/factory_module'
+require 'monkeyshines/utils/logger'
 require 'edamame/scheduling'
 require 'edamame/job'
 require 'edamame/queue'
 require 'edamame/store'
 
 module Edamame
+  # sugar for rescheduled jobs
+  IMMEDIATELY = 0
 
   class PersistentQueue
     DEFAULT_CONFIG = {
@@ -139,7 +141,7 @@ module Edamame
         job = Edamame::Job.from_hash hsh
         self.tube = job.tube
         yield(job) if block
-        queue.put job
+        queue.put job, job.priority, IMMEDIATELY
       end
     end
 
@@ -155,10 +157,10 @@ module Edamame
     def reschedule job
       delay = job.scheduling.delay
       if delay
-        # log_job job, 'rescheduled', delay, (Time.now + delay).to_flat, job.scheduling.to_flat.join
+        log_job job, 'rescheduled', job.key, delay, (Time.now + delay).to_flat, job.scheduling.to_flat.join("\t")
         release job
       else
-        # log_job job, 'deleted'
+        log_job job, 'deleted'
         delete job
       end
     end

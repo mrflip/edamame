@@ -66,6 +66,7 @@ module Edamame
     def update!
       scheduling.total_runs = scheduling.total_runs.to_i + stats['releases']
       scheduling.last_run   = Time.now
+      p ['updated', self.scheduling]
     end
 
     def to_hash flatten=true
