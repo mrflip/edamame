@@ -153,7 +153,7 @@ module Edamame
     def reschedule job
       delay = job.scheduling.delay
       if delay
-        log_job job, 'rescheduled', job.key, delay, (Time.now + delay).to_flat, job.scheduling.to_flat.join("\t")
+        # log_job job, 'rescheduled', job.key, delay, (Time.now + delay).to_flat, job.scheduling.to_flat.join("\t")
         release job
       else
         log_job job, 'deleted'

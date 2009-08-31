@@ -35,7 +35,6 @@ module Edamame
       super *args
       DEFAULT_OPTIONS.each{|key,val| self[key] ||= val }
       [:priority, :ttr, :state].each{|key| self[key] = self[key].to_i }
-      p ['job born', args, self.scheduling]
       case self.scheduling
       when String
         scheduling_hash = YAML.load(self.scheduling) rescue nil
@@ -65,7 +64,6 @@ module Edamame
     def update!
       scheduling.total_runs = scheduling.total_runs.to_i + qjob.stats['releases']
       scheduling.last_run   = Time.now
-      p ['updated', self.scheduling]
     end
 
     def to_hash flatten=true
@@ -76,7 +74,6 @@ module Edamame
         hsh["scheduling"] = hsh['scheduling'].to_yaml
         hsh["obj"]        = hsh['obj'].to_yaml
       end
-      p ['to_hash', hsh, self.scheduling]
       hsh
     end
   end
