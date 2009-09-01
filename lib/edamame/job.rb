@@ -56,9 +56,17 @@ module Edamame
       scheduling.last_run - Time.now
     end
 
-    def delay
-      scheduling.delay
-    end
+    #
+    # Delegation to scheduling strategy.
+    #
+    def prev_max()            self.scheduling.prev_max              end
+    def prev_max=(val)        self.scheduling.prev_max = val        end
+    def prev_items()          self.scheduling.prev_items            end
+    def prev_items=(val)      self.scheduling.prev_items = val      end
+    def prev_items_rate()     self.scheduling.prev_items_rate       end
+    def prev_items_rate=(val) self.scheduling.prev_items_rate = val end
+    def delay()               self.scheduling.delay                 end
+    def delay=(val)           self.scheduling.delay = val           end
 
     # Override this for rescheduling
     def update!
