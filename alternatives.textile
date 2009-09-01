@@ -84,4 +84,5 @@ Most of these are heavy-weight job queuing solutions that play nice with Rails:
 * "Spawn":http://github/tra/spawn
 
 This talk by Rob Mack on "Background Processing in Ruby on Rails":http://blog.robmack.com/2009/05/04/background_processing/ (at the April "Austin on Rails":http://austinonrails.org/ meeting) has a great overview of job queuing solutions for Rails and in general.
+
 <notextile></div></notextile>

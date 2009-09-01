@@ -18,6 +18,7 @@ p. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority jo
 * "License":LICENSE.html
 
 <notextile><div class="toggle"></notextile>
+
 h2(#description). Description
 
 p(heavy). Like beanstalk, edamame:
@@ -39,6 +40,7 @@ p(heavy). Edamame includes a few nifty toys:
 h3. Authors
 
 Philip (flip) Kromer (flip@infochimps.org) 
+
 <notextile></div></notextile>
 
 
