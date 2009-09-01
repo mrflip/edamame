@@ -5,7 +5,7 @@ title:  Usage Notes
 
 h1(gemheader). {{ site.gemname }} %(small):: usage%
 
-<div class="toggle">
+<notextile><div class="toggle"></notextile>
 
 h2. Design
 
@@ -13,7 +13,7 @@ Jobs are persisted to a tokyo tyrant backing store. Beanstalkd
 
 (No failover or discovery, but yes restarting and reloading.)
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Caveats
 
@@ -25,7 +25,7 @@ Weaknesses? Mainly that it will make an Erlang'er cry for its lack of concurrenc
 
 * Although God
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. TODOs
 
@@ -34,7 +34,7 @@ h2. TODOs
 * The sinatra queue viewer doesn't work at the moment.
 * Tests :-/
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Performance
 
@@ -57,7 +57,7 @@ h2. Note on Patches/Pull Requests
 * Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but  bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Endnotes
 
@@ -82,4 +82,4 @@ h2. Endnotes
 ** Some code for the god conf is inspired by that railscast, "this pastie,":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew the "one from the god docs":http://god.rubyforge.org/, and "Configuring GMail notifiers in God":http://millarian.com/programming/ruby-on-rails/monitoring-thin-using-god-with-google-apps-notifications/
 ** Alternatives to God include (in order of complexity): "Monit,":http://mmonit.com/monit/ perhaps "with Munin;":http://www.howtoforge.com/server_monitoring_monit_munin "Cacti":http://www.cacti.net/ and "Hyperic":http://www.hyperic.com/
 
-</div>
+<notextile></div></notextile>

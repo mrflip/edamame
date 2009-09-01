@@ -7,7 +7,7 @@ h1(gemheader). edamame %(small):: alternatives%
 
 h1. Why you should, or shouldn't, use Edamame
 
-<div class="toggle">
+<notextile><div class="toggle"></notextile>
 
 h2. Beanstalk / edamame's strengths and weaknesses
 
@@ -30,7 +30,7 @@ It lacks
 
 **Edamame** adds persistence and (with the God scripts) 'good-enough availability' (note that it still lacks discovery). It also introduces a bit of complexity and some risk of inconsistent state or duplicated jobs (see above).
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Other distributed queues
 
@@ -71,7 +71,7 @@ h3. "Amazon SQS":http://aws.amazon.com/sqs/
 
 This "comparison of message queues":http://wiki.secondlife.com/wiki/Message_Queue_Evaluation_Notes describes one group's opinionated survey of the industrial strenght distributed messaging queue ecosystem. Note carefully their criteria; ours were quite different, hence edamame.
 
-</div><div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Other worker queues
 
@@ -84,4 +84,4 @@ Most of these are heavy-weight job queuing solutions that play nice with Rails:
 * "Spawn":http://github/tra/spawn
 
 This talk by Rob Mack on "Background Processing in Ruby on Rails":http://blog.robmack.com/2009/05/04/background_processing/ (at the April "Austin on Rails":http://austinonrails.org/ meeting) has a great overview of job queuing solutions for Rails and in general.
-</div>
+<notextile></div></notextile>

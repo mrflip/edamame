@@ -5,7 +5,7 @@ title:  Install Notes
 
 h1(gemheader). {{ site.gemname }} %(small):: install%
 
-<div class="toggle">
+<notextile><div class="toggle"></notextile>
 
 h2. Get the code
 
@@ -19,8 +19,7 @@ Better yet, you can also clone the project with "Git":http://git-scm.com by runn
 
 pre. $ git clone git://github.com/mrflip/{{ site.gemname }}
 
-</div>
-<div class="toggle">
+<notextile></div><div class="toggle"></notextile>
 
 h2. Get the Dependencies
 
@@ -58,4 +57,4 @@ and
     pkg=tokyotyrant-ruby-1.10  ;( wget -nc ${ttbase}/${pkg}.tar.gz && tar xvzf ${pkg}.tar.gz && cd $pkg && sudo ruby install.rb ) ;
 </pre>
 
-</div>
+<notextile></div></notextile>
