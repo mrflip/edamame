@@ -34,6 +34,7 @@ class GodProcess
   def self.create config={}
     proc = self.new config
     proc.setup
+    proc.mkdirs!
     proc
   end
 
