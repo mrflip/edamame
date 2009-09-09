@@ -1,13 +1,9 @@
 $: << File.dirname(__FILE__)
-require 'god_process'
-require 'god_email'
-require 'beanstalkd_god'
-require 'tyrant_god'
-require 'sinatra_god'
-require 'god_site_config'
+require 'edamame'
+require 'edamame/monitoring'
+Edamame::SITE_OPTIONS = YAML.load_file(File.dirname(__FILE__)+'/edamame.yaml')
 
-EDAMAME_DB_DIR = '/data/distdb'
-
+p Edamame::SITE_OPTIONS
 #
 # For debugging:
 #
@@ -17,14 +13,14 @@ EDAMAME_DB_DIR = '/data/distdb'
 #
 # TODO: define an EdamameDirector that lets us name these collections.
 #
-THE_FAITHFUL = [
-  [BeanstalkdGod, { :port => 11210, :max_mem_usage => 2.gigabytes,  }],
-  [TyrantGod,     { :port => 11211, :db_dirname => EDAMAME_DB_DIR, :db_name => 'flat_delay_queue.tct' }],
-  [TyrantGod,     { :port => 11212, :db_dirname => EDAMAME_DB_DIR, :db_name => 'fetched_urls.tch' }],
-  # [SinatraGod,    { :port => 11219, :app_dirname => File.dirname(__FILE__)+'/../../app/edamame_san' }],
-]
 
-THE_FAITHFUL.each do |klass, config|
-  proc = klass.create(config.merge :flapping_notify => 'default')
-  proc.mkdirs!
-end
+#
+# Twitter
+#
+handle    = 'twitter'
+base_port = 11250
+# BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
+# TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
+# TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
+
+SinatraGod.create     :port => base_port + 2, :thin_config_yml => '/slice/www/webshines/current/config.yml'

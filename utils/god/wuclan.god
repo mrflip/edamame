@@ -17,7 +17,14 @@ BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 2.gigabytes
 TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
 TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
 
-
+#
+# Twitter
+#
+handle    = 'twitter'
+base_port = 11250
+BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
+TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
+TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
 
 #
 # Facebook

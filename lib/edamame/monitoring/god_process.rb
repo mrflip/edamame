@@ -1,5 +1,5 @@
 class GodProcess
-  CONFIG_DEFAULTS = {
+  DEFAULT_OPTIONS = {
     :monitor_group      => nil,
     :uid                => nil,
     :gid                => nil,
@@ -17,36 +17,41 @@ class GodProcess
     :cpu_usage_interval => 20.minutes,
   }
 
-  attr_accessor :config
-  def initialize config
-    self.config = CONFIG_DEFAULTS.compact.merge(config)
+  attr_accessor :options
+  def initialize *args
+    self.options = { }
+    [DEFAULT_OPTIONS.compact, args[0..-2], Edamame::SITE_OPTIONS, args.last].flatten.each do |opts|
+      self.options.merge!(opts)
+    end
+    p self.options
   end
 
   def setup
-    LOG.info config.inspect
+    LOG.info options.inspect
     God.watch do |watcher|
-      config_watcher  watcher
+      setup_watcher   watcher
       setup_start     watcher
       setup_restart   watcher
       setup_lifecycle watcher
     end
   end
-  def self.create config={}
-    proc = self.new config
+  def self.create options={}
+    proc = self.new options
     proc.setup
     proc.mkdirs!
     proc
   end
 
   def handle
-    (config[:handle] || "#{self.class.kind}_#{config[:port]}").to_s
+    (options[:handle] || "#{self.class.kind}_#{options[:port]}").to_s
   end
 
+  # Log file
   def process_log_file
-    File.join(config[:process_log_dir], handle+".log")
+    File.join(options[:process_log_dir], handle+".log")
   end
 
-
+  # create any directories required by the process
   def mkdirs!
     require 'fileutils'
     FileUtils.mkdir_p File.dirname(process_log_file)
@@ -54,12 +59,12 @@ class GodProcess
 
   # command to start the daemon
   def start_command
-    config[:start_command]
+    options[:start_command]
   end
   # command to stop the daemon
   # return nil to have god daemonize the process
   def stop_command
-    config[:stop_command]
+    options[:stop_command]
   end
   # command to restart
   # if stop_command is nil, it lets god daemonize the process
@@ -69,27 +74,32 @@ class GodProcess
     [stop_command, "sleep 1", start_command].join(" && ")
   end
 
-  def config_watcher watcher
+  #
+  # Setup common to most watchers
+  #
+  def setup_watcher watcher
     watcher.name             = self.handle
     watcher.start            = start_command
     watcher.stop             = stop_command            if stop_command
     watcher.restart          = restart_command         if restart_command
-    watcher.group            = config[:monitor_group]  if config[:monitor_group]
-    watcher.uid              = config[:uid]            if config[:uid]
-    watcher.gid              = config[:gid]            if config[:gid]
-    watcher.interval         = config[:default_interval]
-    watcher.start_grace      = config[:start_grace_time]
-    watcher.restart_grace    = config[:restart_grace_time] || (config[:start_grace_time] + 2.seconds)
+    watcher.group            = options[:monitor_group]  if options[:monitor_group]
+    watcher.uid              = options[:uid]            if options[:uid]
+    watcher.gid              = options[:gid]            if options[:gid]
+    watcher.interval         = options[:default_interval]
+    watcher.start_grace      = options[:start_grace_time]
+    watcher.restart_grace    = options[:restart_grace_time] || (options[:start_grace_time] + 2.seconds)
     watcher.behavior(:clean_pid_file)
   end
 
   #
+  # Starts process
+  #
   def setup_start watcher
     watcher.start_if do |start|
       start.condition(:process_running) do |c|
-        c.interval = config[:start_interval]
+        c.interval = options[:start_interval]
         c.running  = false
-        c.notify     = config[:start_notify] if config[:start_notify]
+        c.notify     = options[:start_notify] if options[:start_notify]
       end
     end
   end
@@ -98,16 +108,16 @@ class GodProcess
   def setup_restart watcher
     watcher.restart_if do |restart|
       restart.condition(:memory_usage) do |c|
-        c.interval   = config[:mem_usage_interval] if config[:mem_usage_interval]
-        c.above      = config[:max_mem_usage] || 150.megabytes
+        c.interval   = options[:mem_usage_interval] if options[:mem_usage_interval]
+        c.above      = options[:max_mem_usage] || 150.megabytes
         c.times      = [3, 5] # 3 out of 5 intervals
-        c.notify       = config[:restart_notify] if config[:restart_notify]
+        c.notify       = options[:restart_notify] if options[:restart_notify]
       end
       restart.condition(:cpu_usage) do |c|
-        c.interval   = config[:cpu_usage_interval] if config[:cpu_usage_interval]
-        c.above      = config[:max_cpu_usage] || 50.percent
+        c.interval   = options[:cpu_usage_interval] if options[:cpu_usage_interval]
+        c.above      = options[:max_cpu_usage] || 50.percent
         c.times      = 5
-        c.notify       = config[:restart_notify] if config[:restart_notify]
+        c.notify       = options[:restart_notify] if options[:restart_notify]
       end
     end
   end
@@ -123,7 +133,7 @@ class GodProcess
         c.retry_in     = 60.minutes
         c.retry_times  = 5
         c.retry_within = 12.hours
-        c.notify       = config[:flapping_notify] if config[:flapping_notify]
+        c.notify       = options[:flapping_notify] if options[:flapping_notify]
       end
     end
   end

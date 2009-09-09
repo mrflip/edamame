@@ -1,4 +1,3 @@
-
 #
 # -host   name        : specify the host name or the address of the server.  By default, every network address is bound.
 # -port   num         : specify the port number.  By default, it is 1978.
@@ -26,7 +25,7 @@
 # -unmask expr        : specify the names of allowed commands.
 #
 class TyrantGod < GodProcess
-  TyrantGod::CONFIG_DEFAULTS = {
+  TyrantGod::DEFAULT_OPTIONS = {
     :listen_on      => '0.0.0.0',
     :port           => 11200,
     :db_dirname     => '/tmp',
@@ -37,9 +36,8 @@ class TyrantGod < GodProcess
     :server_exe     => '/usr/local/bin/ttserver',
   }
 
-  def initialize *args
-    super *args
-    self.config = TyrantGod::CONFIG_DEFAULTS.compact.merge(self.config)
+  def initialize _options
+    super TyrantGod::DEFAULT_OPTIONS.compact.merge(_options)
   end
 
   def self.kind
@@ -47,21 +45,17 @@ class TyrantGod < GodProcess
   end
 
   def dbname
-    basename = config[:db_name] || (handle+'.tct')
-    File.join(config[:db_dirname], basename)
+    basename = options[:db_name] || (handle+'.tct')
+    File.join(options[:db_dirname], basename)
   end
 
   def start_command
     [
-      config[:server_exe],
-      "-host #{config[:listen_on]}",
-      "-port #{config[:port]}",
+      options[:server_exe],
+      "-host #{options[:listen_on]}",
+      "-port #{options[:port]}",
       "-log  #{process_log_file}",
       dbname
     ].flatten.compact.join(" ")
-  end
-
-  def self.are_you_there_god_its_me_beanstalkd *args
-    create *args
   end
 end

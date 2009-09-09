@@ -1,36 +1,34 @@
 class SinatraGod < GodProcess
-  SinatraGod::CONFIG_DEFAULTS = {
-    :port           => 12000,
-    :app_dirname    => File.dirname(__FILE__)+'/../../app/edamame_san',
-    :monitor_group  => 'sinatras',
-    :server_exe     => '/usr/local/bin/shotgun',
+  SinatraGod::DEFAULT_OPTIONS = {
+    :port            => 12000,
+    :app_dirname     => File.dirname(__FILE__)+'/../../app/edamame_san',
+    :monitor_group   => 'sinatras',
+    :server_exe      => '/usr/bin/thin',
+    :thin_config_yml => '/somedir/config.yml',
   }
   def initialize *args
-    super *args
-    self.config = SinatraGod::CONFIG_DEFAULTS.compact.merge(self.config)
+    super SinatraGod::DEFAULT_OPTIONS.compact, *args
   end
 
   def self.kind
     :sinatra
   end
 
-  def app_runner
-    File.join(config[:app_dirname], config[:app_name] || 'config.ru')
+  def thin_command state
+    [ options[:server_exe], state,
+      "--config=#{options[:thin_config_yml]}"
+    ].flatten.compact.join(" ")
   end
 
   def start_command
-    [
-      config[:server_exe],
-      "--server=thin",
-      "--port=#{config[:port]}",
-      app_runner
-    ].flatten.compact.join(" ")
+    thin_command :start
   end
-  # w.start   = "thin start   -C #{file} -o #{number}"
-  # w.stop    = "thin stop    -C #{file} -o #{number}"
-  # w.restart = "thin restart -C #{file} -o #{number}"
 
-  def self.are_you_there_god_its_me_sinatra *args
-    create *args
+  def restart_command
+    thin_command :restart
+  end
+
+  def stop_command
+    thin_command :stop
   end
 end

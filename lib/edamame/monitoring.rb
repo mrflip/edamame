@@ -1,3 +1,4 @@
+require 'yaml'
 require 'edamame/monitoring/god_process'
 require 'edamame/monitoring/god_email'
 require 'edamame/monitoring/beanstalkd_god'

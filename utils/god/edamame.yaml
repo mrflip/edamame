@@ -1,0 +1,22 @@
+--- # -*- YAML -*-
+#
+# Save this file in your god dir, *then* change the settings below.
+# Make sure your version control system is set to ignore the file.
+#
+
+:email:
+  :domain:              infochimps.org          # 
+  :username:            robot@infochimps.org    # sender email username
+  :password:            xx_password_xx          # sender email password
+  :to:                  flip@infochimps.org     # recipient email address
+  :to_name:             Monitors                # recipient name
+
+# these apply to all processes  
+:god_process:
+  :flapping_notify:       default
+  
+:tyrant_god:
+  :db_dirname:          /data/distdb
+
+:thin_config_yml:       'foo.yml'
+:server_exe:            '/usr/local/bin/thin'
