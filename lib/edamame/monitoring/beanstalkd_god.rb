@@ -9,9 +9,8 @@ class BeanstalkdGod < GodProcess
     :monitor_group  => 'beanstalkds',
     :beanstalkd_exe => '/usr/local/bin/beanstalkd',
   }
-  def initialize _options
-    super BeanstalkdGod::DEFAULT_OPTIONS.compact.merge(_options)
-  end
+  def self.default_options() super.deep_merge(BeanstalkdGod::DEFAULT_OPTIONS)       ; end
+  def self.site_options()    super.deep_merge(global_site_options[:beanstalkd_god]||{}) ; end
 
   def self.kind
     :beanstalkd

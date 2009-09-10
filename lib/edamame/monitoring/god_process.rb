@@ -16,8 +16,12 @@ class GodProcess
     :mem_usage_interval => 20.minutes,
     :cpu_usage_interval => 20.minutes,
   }
-
+  # Site options definition files. Merged in order, later entries win.
+  GLOBAL_SITE_OPTIONS_FILES = []
+  # merged contents of the GLOBAL_SITE_OPTIONS_FILES
+  cattr_reader  :global_site_options
   attr_accessor :options
+
   #
   # * Class options are defined by the edamame code. They define each process'
   #   base behavior.
@@ -32,31 +36,47 @@ class GodProcess
   #
   # Note that, though the options hash is preserved, if action
   #
-  def initialize *args
+  def initialize _options
     self.options = { }
-    [DEFAULT_OPTIONS.compact, args[0..-2], Edamame::SITE_OPTIONS, args.last].flatten.each do |opts|
-      self.options.merge!(opts)
-    end
+    self.options.deep_merge! self.class.default_options
+    self.options.deep_merge! self.class.site_options
+    self.options.deep_merge! _options
     p self.options
   end
 
   #
   # Walks upwards through the inheritance tree, accumulating default
-  # options. Later (subclass) nodes should override earlier (super) nodes.
+  # options. Later (subclass) nodes should override earlier (super) nodes, with
+  # something like
   #
-  # Please to use deep_merge, not merge.
+  #     def self.default_options
+  #       super.deep_merge(ThisClass::DEFAULT_OPTIONS)
+  #     end
   #
-  def default_options
+  def self.default_options
+    GodProcess::DEFAULT_OPTIONS
   end
 
   #
-  # Walks upwards through the inheritance tree,
-  # accumulating default options. Later (subclass) nodes should override earlier
-  # (super) nodes.
+  # Walks upwards through the inheritance tree, accumulating site
+  # options. Later (subclass) nodes should override earlier (super) nodes, with
+  # something like
   #
-  # Please to use deep_merge, not merge.
+  #     def self.site_options
+  #       super.deep_merge( global_site_options[:this_class] )
+  #     end
   #
-  def site_options
+  def self.site_options
+    global_site_options[:god_process] || {}
+  end
+
+  def self.global_site_options
+    return @global_site_options if @globalsite_options
+    @global_site_options = {}
+    GLOBAL_SITE_OPTIONS_FILES.each do |options_filename|
+      @global_site_options.deep_merge! YAML.load_file(options_filename)
+    end
+    @global_site_options
   end
 
   def setup
@@ -113,11 +133,12 @@ class GodProcess
   def setup_watcher watcher
     watcher.name             = self.handle
     watcher.start            = start_command
-    watcher.stop             = stop_command            if stop_command
-    watcher.restart          = restart_command         if restart_command
+    watcher.stop             = stop_command             if stop_command
+    watcher.restart          = restart_command          if restart_command
     watcher.group            = options[:monitor_group]  if options[:monitor_group]
     watcher.uid              = options[:uid]            if options[:uid]
     watcher.gid              = options[:gid]            if options[:gid]
+    watcher.pid_file         = options[:pid_file]       if options[:pid_file]
     watcher.interval         = options[:default_interval]
     watcher.start_grace      = options[:start_grace_time]
     watcher.restart_grace    = options[:restart_grace_time] || (options[:start_grace_time] + 2.seconds)

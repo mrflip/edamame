@@ -23,9 +23,9 @@ module God
   # If an explicit port is given, that port is used with no regard to the rest
   # of the group, and its number is skipped.
   #
-  def service_group base_port, services
+  def self.process_group base_port, services
     services.each do |klass, options|
-      klass.create({ :port => base_port }.merge(options))
+      klass.create({ :port => base_port }.deep_merge(options))
       base_port += 1
     end
   end

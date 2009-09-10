@@ -1,14 +1,13 @@
 class SinatraGod < GodProcess
   SinatraGod::DEFAULT_OPTIONS = {
-    :port            => 12000,
-    :app_dirname     => File.dirname(__FILE__)+'/../../app/edamame_san',
     :monitor_group   => 'sinatras',
-    :server_exe      => '/usr/bin/thin',
+    :server_exe      => '/usr/bin/thin',        # path to thin. Override this in the site config file.
+    :port            => 12000,
     :thin_config_yml => '/somedir/config.yml',
+    :pid_file        => '/var/run/god/sinatra.pid'
   }
-  def initialize *args
-    super SinatraGod::DEFAULT_OPTIONS.compact, *args
-  end
+  def self.default_options() super.deep_merge(SinatraGod::DEFAULT_OPTIONS)           ; end
+  def self.site_options()    super.deep_merge(global_site_options[:sinatra_god]||{}) ; end
 
   def self.kind
     :sinatra
@@ -16,7 +15,8 @@ class SinatraGod < GodProcess
 
   def thin_command state
     [ options[:server_exe], state,
-      "--config=#{options[:thin_config_yml]}"
+      "--config=#{options[:thin_config_yml]}",
+      (options[:pid_file] ? "--pid=#{options[:pid_file]}" : ''),
     ].flatten.compact.join(" ")
   end
 

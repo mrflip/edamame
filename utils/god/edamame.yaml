@@ -5,18 +5,57 @@
 #
 
 :god_notifiers:
-  :domain:              infochimps.org          # 
+  :domain:              infochimps.org          #
   :username:            robot@infochimps.org    # sender email username
   :password:            xx_password_xx          # sender email password
   :to:                  flip@infochimps.org     # recipient email address
   :to_name:             Monitors                # recipient name
 
-# these apply to all processes  
+# these apply to all processes
 :god_process:
-  :flapping_notify:       default
-  
+  :flapping_notify:     default
+
 :tyrant_god:
   :db_dirname:          /data/distdb
 
-:thin_config_yml:       'foo.yml'
-:server_exe:            '/usr/local/bin/thin'
+:sinatra_god:
+  :thin_config_yml:     '/slice/www/webshines/current/config.yml'
+  :server_exe:          '/usr/local/bin/thin'
+
+
+:process_groups:
+  :lastfm:
+    :queue_beanstalkd:
+      :type:                    :beanstalkd_god
+      :max_mem_usage:           100000000
+      :port:                    11250
+    :queue_db:
+      :type:                    :tyrant_god
+      :db_name:                 lastfm-queue.tct
+      :port:                    11251
+    :scraped_at_db:
+      :type:                    :tyrant_god
+      :db_name:                 lastfm-scraped_at.tch
+      :port:                    11252
+
+  :twitter_search:
+    :queue_beanstalkd:
+      :type:                    :beanstalkd_god
+      :max_mem_usage:           100000000
+      :port:                    11260
+    :queue_db:
+      :type:                    :tyrant_god
+      :db_name:                 twitter_search-queue.tct
+      :port:                    11261
+
+  :twitter_api:
+    :scraped_at_db:
+      :type:                    :tyrant_god
+      :db_name:                 twitter_api-scraped_at.tch
+      :port:                    11272
+    # :web_monitor:
+    #   :type:                  :sinatra_god
+    #   :thin_config_yml:       /slice/www/webshines/current/config.yml
+    #   :port:                  11275
+    #   :pid_file:              /var/run/god/thin.pid
+

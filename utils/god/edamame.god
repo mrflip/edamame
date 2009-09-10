@@ -1,9 +1,9 @@
-$: << File.dirname(__FILE__)
+$: << File.dirname(__FILE__)+'/../../lib'
+$: << File.dirname(__FILE__)+'/../../../wukong/lib'
+$: << File.dirname(__FILE__)+'/../../../monkeyshines/lib'
 require 'edamame'
 require 'edamame/monitoring'
-Edamame::SITE_OPTIONS = YAML.load_file(File.dirname(__FILE__)+'/edamame.yaml')
 
-p Edamame::SITE_OPTIONS
 #
 # For debugging:
 #
@@ -14,13 +14,23 @@ p Edamame::SITE_OPTIONS
 # TODO: define an EdamameDirector that lets us name these collections.
 #
 
-#
-# Twitter
-#
-handle    = 'twitter'
-base_port = 11250
-# BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
-# TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
-# TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
+GodProcess::GLOBAL_SITE_OPTIONS_FILES << ENV['HOME']+'/.edamame'
 
-SinatraGod.create     :port => base_port + 2, :thin_config_yml => '/slice/www/webshines/current/config.yml'
+# #
+# # Twitter
+# #
+# handle    = 'twitter'
+# God.process_group 11250, [
+#   # [ BeanstalkdGod, { :max_mem_usage => 100.megabytes } ],
+#   # [ TyrantGod,     { :db_name => handle+'-queue.tct' } ],
+#   # [ TyrantGod,     { :db_name => handle+'-scraped_at.tch' } ],
+#   [ SinatraGod,    { :thin_config_yml => '/slice/www/webshines/current/config.yml' } ],
+#   ]
+
+GodProcess.global_site_options[:process_groups].each do |handle, group_info|
+  group_info.each do |group, group_options|
+    klass = FactoryModule.get_class Kernel, group_options[:type]
+    klass.create(group_options)
+  end
+end
+

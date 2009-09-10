@@ -35,10 +35,8 @@ class TyrantGod < GodProcess
     :monitor_group  => 'tyrants',
     :server_exe     => '/usr/local/bin/ttserver',
   }
-
-  def initialize _options
-    super TyrantGod::DEFAULT_OPTIONS.compact.merge(_options)
-  end
+  def self.default_options() super.deep_merge(TyrantGod::DEFAULT_OPTIONS)           ; end
+  def self.site_options()    super.deep_merge(global_site_options[:tyrant_god]||{}) ; end
 
   def self.kind
     :ttyrant
