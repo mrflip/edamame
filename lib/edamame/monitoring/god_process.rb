@@ -18,12 +18,45 @@ class GodProcess
   }
 
   attr_accessor :options
+  #
+  # * Class options are defined by the edamame code. They define each process'
+  #   base behavior.
+  #
+  # * Site options are defined by config file(s), and define machine/org
+  #   specific policy (paths to daemon executables, for instance). Site options
+  #   override class options.
+  #
+  # * Options passed in at instantiation describe the specifics of this
+  #   particular process -- the path to a database's file, perhaps. They
+  #   override site options (and therefore class options too).
+  #
+  # Note that, though the options hash is preserved, if action
+  #
   def initialize *args
     self.options = { }
     [DEFAULT_OPTIONS.compact, args[0..-2], Edamame::SITE_OPTIONS, args.last].flatten.each do |opts|
       self.options.merge!(opts)
     end
     p self.options
+  end
+
+  #
+  # Walks upwards through the inheritance tree, accumulating default
+  # options. Later (subclass) nodes should override earlier (super) nodes.
+  #
+  # Please to use deep_merge, not merge.
+  #
+  def default_options
+  end
+
+  #
+  # Walks upwards through the inheritance tree,
+  # accumulating default options. Later (subclass) nodes should override earlier
+  # (super) nodes.
+  #
+  # Please to use deep_merge, not merge.
+  #
+  def site_options
   end
 
   def setup
