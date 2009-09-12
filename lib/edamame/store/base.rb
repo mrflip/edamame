@@ -55,7 +55,7 @@ module Edamame
       #
       # obvs only works when there's just one store
       #
-      def self.create type, config
+      def self.create type, options
       end
     end
   end

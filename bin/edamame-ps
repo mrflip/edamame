@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ps aux | egrep '(beanstalk|ttserver|god|ruby|scrape|shotgun|thin)' | grep -v ' grep '
+ps aux | egrep '(beanstalk|ttserver|god|ruby|scrape|shotgun|thin)' | egrep -v ' grep |mdns://|^_lp' | cut -c 1-200 | sort -k11

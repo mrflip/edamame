@@ -13,8 +13,8 @@ class SinatraGod < GodProcess
     :sinatra
   end
 
-  def thin_command state
-    [ options[:server_exe], state,
+  def thin_command action
+    [ options[:server_exe], action,
       "--config=#{options[:thin_config_yml]}",
       (options[:pid_file] ? "--pid=#{options[:pid_file]}" : ''),
     ].flatten.compact.join(" ")

@@ -27,9 +27,9 @@ module Edamame
       def save scrape_job, priority=nil, delay=nil
         body       = scrape_job.to_flat.join("\t")
         delay    ||= delay_to_next_scrape(scrape_job)
-        priority ||= config[:priority]
+        priority ||= options[:priority]
         log scrape_job, priority, delay
-        job_queue.put body, priority, delay, config[:time_to_run]
+        job_queue.put body, priority, delay, options[:time_to_run]
       end
       # delegates to #save() -- priority and delay are unchanged.
       def <<(scrape_job) save scrape_job  end
