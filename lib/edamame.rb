@@ -13,8 +13,8 @@ module Edamame
 
   class PersistentQueue
     DEFAULT_OPTIONS = {
-      :queue => { :type => :beanstalk_queue, :uris => ['localhost:11300'] },
-      :store => { :type => :tyrant_store,    :uri  =>           ':11301'  }
+      :queue => { :type => :beanstalk_queue, :uris => ['localhost:11100'] },
+      :store => { :type => :tyrant_store,    :uri  =>           ':11101'  }
     }
     attr_reader :tube, :store, :queue
     def initialize _options={}
@@ -88,6 +88,7 @@ module Edamame
     # and in some arbitrary order.
     #
     def each klass=nil, &block
+      klass ||= Edamame::Job
       store.each_as(klass) do |key, job|
         yield job
       end
@@ -100,7 +101,7 @@ module Edamame
       hoard do |job|
         yield(job) if block
         unless store.include?(job.key)
-          store.save job
+          warn "Missing job: #{job.inspect}"
         end
       end
       unhoard &block

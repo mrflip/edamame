@@ -4,6 +4,7 @@ require 'rubygems'
 require 'edamame'
 require 'monkeyshines/monitor'
 require 'monkeyshines/utils/trollop'
+require 'pathname'
 require File.dirname(__FILE__)+'/edamame_util_opts'
 Log = Monkeyshines.logger
 
@@ -15,10 +16,5 @@ pq = Edamame::PersistentQueue.new( :tube => CONFIG[:tube],
 periodic_log = Monkeyshines::Monitor::PeriodicLogger.new(:iters => 1, :time => 30)
 pq.load do |job|
   obj = job.obj rescue nil
-  periodic_log.periodically{ [ pq.store.size, job, job.tube, job.priority, job.delay, job.key, obj.inspect ] }
-  if job.is_a?(Edamame::Job)
-    job.scheduling.prev_max += 1000
-    job.obj[:foo]||=''
-    job.obj[:foo] += '-a'
-  end
+  periodic_log.periodically{ [ pq.store.size, job.tube, job.priority, job.delay, job.key, job.class, obj.inspect ] }
 end

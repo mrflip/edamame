@@ -67,6 +67,7 @@ module Edamame
     def prev_items_rate=(val) self.scheduling.prev_items_rate = val end
     def delay()               self.scheduling.delay                 end
     def delay=(val)           self.scheduling.delay = val           end
+    def last_run()            self.scheduling.last_run              end
 
     # Override this for rescheduling
     def update!
