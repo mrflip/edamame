@@ -9,29 +9,28 @@
 #
 
 #
+# Twitter Search
+#
+handle    = 'twitter_search'
+base_port = 11220
+BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
+TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct', :db_dirname => '/data/ripd/com.tw/com.twitter.search/distdb/20090928'
+
+#
 # Lastfm
 #
 handle    = 'lastfm'
-base_port = 11210
+base_port = 11240
 BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 2.gigabytes
-TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
-TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
+TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct',      :db_dirname => '/data/ripd/com.au/com.audioscrobbler.com/distdb/20090928'
+TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch', :db_dirname => '/data/ripd/com.au/com.audioscrobbler.com/distdb/20090928'
 
-#
-# Twitter
-#
-handle    = 'twitter'
-base_port = 11250
-BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
-TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
-TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
-
-#
-# Facebook
-#
-handle    = 'facebook'
-base_port = 11250
-BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
-TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
-TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
-TyrantGod.create     :port => base_port + 3, :db_name => handle+'-registration.tch'
+# #
+# # Facebook
+# #
+# handle    = 'facebook'
+# base_port = 11250
+# BeanstalkdGod.create :port => base_port + 0, :max_mem_usage => 100.megabytes
+# TyrantGod.create     :port => base_port + 1, :db_name => handle+'-queue.tct'
+# TyrantGod.create     :port => base_port + 2, :db_name => handle+'-scraped_at.tch'
+# TyrantGod.create     :port => base_port + 3, :db_name => handle+'-registration.tch'
