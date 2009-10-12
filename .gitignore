@@ -34,3 +34,4 @@ config/private.yaml
 *.stackdump
 *.so
 *.o
+doc

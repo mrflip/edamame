@@ -67,9 +67,33 @@ task :default => :spec
 
 begin
   require 'yard'
-  YARD::Rake::YardocTask.new
+  YARD::Rake::YardocTask.new do |yard|
+    yard.files = %w[bin lib utils].map{|d| d+'/**/*.rb'}
+    p yard.files
+  end
 rescue LoadError
   task :yardoc do
     abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
   end
+end
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  require 'rdoc'
+  if File.exist?('VERSION')
+    version = File.read('VERSION')
+  else
+    version = ""
+  end
+
+  rdoc.options += [
+    '-SHN',
+    '-f', 'darkfish',  # use darkfish rdoc styler
+  ]
+  p rdoc.options
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "edamame #{version}"
+  #
+  rdoc.rdoc_files.include('*.textile*')
+  %w[bin lib utils].each{|d| rdoc.rdoc_files.include d+'/**/*.rb'}
 end
