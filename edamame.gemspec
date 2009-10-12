@@ -10,13 +10,9 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philip (flip) Kromer"]
   s.date = %q{2009-10-11}
-  s.description = %q{
+  s.description = %q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. 
 
-Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system.
-
-Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration.
-
-}
+Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
   s.email = %q{flip@infochimps.org}
   s.executables = ["edamame-nuke", "edamame-ps", "edamame-stats", "edamame-sync", "edamame_util_opts.rb", "test_run.rb"]
   s.extra_rdoc_files = [
