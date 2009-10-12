@@ -16,12 +16,12 @@ module Edamame
       :queue => { :type => :beanstalk_queue, :uris => ['localhost:11100'] },
       :store => { :type => :tyrant_store,    :uri  =>           ':11101'  }
     }
-    attr_reader :tube, :store, :queue
+    attr_reader :tube, :store, :queue, :options
     def initialize _options={}
-      options = PersistentQueue::DEFAULT_OPTIONS.deep_merge(_options)
-      @tube  = options[:tube] || :default
-      @store = Edamame::Store.create options[:store]
-      @queue = Edamame::Queue.create options[:queue].merge(:default_tube => @tube)
+      @options = PersistentQueue::DEFAULT_OPTIONS.deep_merge(_options)
+      @tube    = options[:tube] || :default
+      @store   = Edamame::Store.create options[:store]
+      @queue   = Edamame::Queue.create options[:queue].merge(:default_tube => @tube)
     end
 
     #
