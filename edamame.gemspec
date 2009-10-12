@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philip (flip) Kromer"]
-  s.date = %q{2009-08-23}
+  s.date = %q{2009-10-11}
   s.description = %q{
 
 Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system.
@@ -18,7 +18,7 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
 
 }
   s.email = %q{flip@infochimps.org}
-  s.executables = ["edamame-ps", "empty_all.rb", "stats.rb", "sync.rb", "test_run.rb"]
+  s.executables = ["edamame-nuke", "edamame-ps", "edamame-stats", "edamame-sync", "edamame_util_opts.rb", "test_run.rb"]
   s.extra_rdoc_files = [
     "LICENSE.textile",
      "README.textile"
@@ -47,17 +47,27 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "app/edamame_san/views/layout.haml",
      "app/edamame_san/views/load.haml",
      "app/edamame_san/views/root.haml",
+     "bin/edamame-nuke",
      "bin/edamame-ps",
-     "bin/empty_all.rb",
-     "bin/stats.rb",
-     "bin/sync.rb",
+     "bin/edamame-stats",
+     "bin/edamame-sync",
+     "bin/edamame_util_opts.rb",
      "bin/test_run.rb",
      "edamame.gemspec",
      "lib/edamame.rb",
      "lib/edamame/job.rb",
+     "lib/edamame/monitoring.rb",
+     "lib/edamame/monitoring/README-god.textile",
+     "lib/edamame/monitoring/beanstalkd_god.rb",
+     "lib/edamame/monitoring/god_email.rb",
+     "lib/edamame/monitoring/god_process.rb",
+     "lib/edamame/monitoring/process_groups.rb",
+     "lib/edamame/monitoring/sinatra_god.rb",
+     "lib/edamame/monitoring/tyrant_god.rb",
+     "lib/edamame/old/heavy_job.rb",
+     "lib/edamame/old/rescheduled.rb",
      "lib/edamame/queue.rb",
      "lib/edamame/queue/beanstalk.rb",
-     "lib/edamame/rescheduled.rb",
      "lib/edamame/scheduling.rb",
      "lib/edamame/store.rb",
      "lib/edamame/store/base.rb",
@@ -65,15 +75,12 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "lib/methods.txt",
      "spec/edamame_spec.rb",
      "spec/spec_helper.rb",
-     "utils/god/README-god.textile",
-     "utils/god/beanstalkd_god.rb",
      "utils/god/edamame.god",
+     "utils/god/edamame.yaml",
      "utils/god/god-etc-init-dot-d-example",
-     "utils/god/god_email.rb",
-     "utils/god/god_process.rb",
+     "utils/god/god.conf",
      "utils/god/god_site_config.rb",
-     "utils/god/sinatra_god.rb",
-     "utils/god/tyrant_god.rb",
+     "utils/god/wuclan.god",
      "utils/simulation/Add Percent Variation.vi",
      "utils/simulation/Harmonic Average.vi",
      "utils/simulation/Rescheduling Simulation.aliases",
