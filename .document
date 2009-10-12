@@ -1,5 +1,7 @@
 README.textile
 LICENSE.textile
-app/**/*.rb
+app/**/*.rm
 lib/**/*.rb
+examples/**/*.rb
 utils/**/*.rb
+docpages/**/*.textile

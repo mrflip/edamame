@@ -6,11 +6,13 @@ begin
   Jeweler::Tasks.new do |gem|
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.name        = "edamame"
-    gem.summary     = %Q{Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue.}
-    gem.description = %Q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. \n\nLike beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
+    gem.authors     = ["Philip (flip) Kromer"]
     gem.email       = "flip@infochimps.org"
     gem.homepage    = "http://github.com/mrflip/edamame"
-    gem.authors     = ["Philip (flip) Kromer"]
+    gem.summary     = %Q{Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue.}
+    gem.description = %Q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. \n\nLike beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
+    gem.executables = FileList['bin/edamame-*'].pathmap('%f')
+    gem.files       =  FileList["\w*", "{bin,docpages,examples,lib,spec,utils}/**/*"].reject{|file| file.to_s =~ %r{.*private.*} }
     gem.add_dependency 'tokyotyrant'
     gem.add_dependency 'wukong'
     gem.add_dependency 'monkeyshines'
@@ -26,13 +28,11 @@ Spec::Rake::SpecTask.new(:spec) do |spec|
   spec.libs << 'lib' << 'spec'
   spec.spec_files = FileList['spec/**/*_spec.rb']
 end
-
 Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.libs << 'lib' << 'spec'
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
 end
-
 task :spec => :check_dependencies
 task :default => :spec
 
@@ -41,7 +41,7 @@ begin
   Reek::RakeTask.new do |t|
     t.fail_on_error = true
     t.verbose = false
-    t.source_files = ['lib/**/*.rb', 'utils/**/*.rb']
+    t.source_files = ['lib/**/*.rb', 'examples/**/*.rb', 'utils/**/*.rb']
   end
 rescue LoadError
   task :reek do
@@ -79,7 +79,6 @@ Rake::RDocTask.new do |rdoc|
   else
     version = ""
   end
-
   rdoc.options += [
     '-SHN',
     '-f', 'darkfish',  # use darkfish rdoc styler
@@ -88,4 +87,13 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "edamame #{version}"
   #
   File.open(File.dirname(__FILE__)+'/.document').each{|line| rdoc.rdoc_files.include(line.chomp) }
+end
+
+begin
+  require 'cucumber/rake/task'
+  Cucumber::Rake::Task.new(:features)
+rescue LoadError
+  task :features do
+    abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
+  end
 end
