@@ -12,7 +12,7 @@ begin
     gem.summary     = %Q{Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue.}
     gem.description = %Q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. \n\nLike beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
     gem.executables = FileList['bin/edamame-*'].pathmap('%f')
-    gem.files       =  FileList["\w*", "**/*.textile", "{bin,docpages,examples,lib,spec,utils}/**/*"].reject{|file| file.to_s =~ %r{.*private.*} }
+    gem.files       =  FileList["\w*", "**/*.textile", "{app,bin,docpages,examples,lib,spec,utils}/**/*"].reject{|file| file.to_s =~ %r{.*private.*} }
     gem.add_dependency 'beanstalk-client'
     gem.add_dependency 'wukong'
     gem.add_dependency 'monkeyshines'
