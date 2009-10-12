@@ -41,7 +41,8 @@ module Edamame
         self.scheduling = Scheduling.from_hash(scheduling_hash) if scheduling_hash
       when Hash
         self.scheduling = Scheduling.from_hash(scheduling)
-      # else it should behave like a scheduling
+      else
+        # else it should behave like a scheduling
       end
       if self.obj.is_a?(String) then self.obj = YAML.load(self.obj) rescue nil ; end
     end
@@ -75,6 +76,11 @@ module Edamame
       scheduling.last_run   = Time.now
     end
 
+    # Fields suitable for emission as a log line.
+    def loggable
+      "%-15s\t%7d\t%7.2f\t%-23s" % [tube, priority, delay, key]
+    end
+
     def to_hash flatten=true
       hsh = super()
       hsh["scheduling"]   = scheduling.to_hash
@@ -99,5 +105,10 @@ Beanstalk::Job.class_eval do
 
   def tube
     stats['tube']
+  end
+
+  # Fields suitable for emission as a log line.
+  def loggable
+    "%-15s\t%7d\t%7.2f\t%-23s" % [tube, priority, delay, key]
   end
 end

@@ -165,13 +165,13 @@ class GodProcess
         c.interval   = options[:mem_usage_interval] if options[:mem_usage_interval]
         c.above      = options[:max_mem_usage] || 150.megabytes
         c.times      = [3, 5] # 3 out of 5 intervals
-        c.notify       = options[:restart_notify] if options[:restart_notify]
+        c.notify     = options[:restart_notify] if options[:restart_notify]
       end
       restart.condition(:cpu_usage) do |c|
         c.interval   = options[:cpu_usage_interval] if options[:cpu_usage_interval]
         c.above      = options[:max_cpu_usage] || 50.percent
         c.times      = 5
-        c.notify       = options[:restart_notify] if options[:restart_notify]
+        c.notify     = options[:restart_notify] if options[:restart_notify]
       end
     end
   end

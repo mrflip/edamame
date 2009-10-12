@@ -24,14 +24,14 @@ module Edamame
       if delay
         release job
       else
-        log_job job, 'deleted'
+        log_action 'deleting', job
         delete job
       end
     end
 
     # Log info about an action on a job
-    def log_job job, *stuff
-      Log.info [job.tube, job.priority, job.delay, job.obj['key'], *stuff].flatten.join("\t")
+    def log_action action, job, *stuff
+      Log.info [action, job.loggable, *stuff].flatten.join("\t")
     end
 
   end

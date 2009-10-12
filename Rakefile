@@ -4,15 +4,15 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.name        = "edamame"
     gem.summary     = %Q{Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue.}
     gem.description = %Q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. \n\nLike beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
     gem.email       = "flip@infochimps.org"
     gem.homepage    = "http://github.com/mrflip/edamame"
     gem.authors     = ["Philip (flip) Kromer"]
-    gem.add_development_dependency "rspec"
-    gem.add_development_dependency "yard"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    # gem.add_development_dependency "rspec"
+    # gem.add_development_dependency "yard"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -38,7 +38,7 @@ begin
   Reek::RakeTask.new do |t|
     t.fail_on_error = true
     t.verbose = false
-    t.source_files = 'lib/**/*.rb'
+    t.source_files = ['lib/**/*.rb', 'utils/**/*.rb']
   end
 rescue LoadError
   task :reek do
