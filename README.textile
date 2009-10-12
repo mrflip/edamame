@@ -64,7 +64,7 @@ h3. TODOs
 
 h3. Links
 
-There's a fuller set of docs at "http://mrflip.github.com/edamame":http://mrflip.github.com/edamame
+There's a **fuller set of docs** at "http://mrflip.github.com/edamame":http://mrflip.github.com/edamame 
 
 * Origin of the name "edamame":http://en.wikipedia.org/wiki/Edamame
 * This library was written to support the "Monkeyshines":http://bit.ly/shines distributed API scraper.
