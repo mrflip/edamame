@@ -20,7 +20,9 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "README.textile"
   ]
   s.files = [
-    "bin/edamame-nuke",
+    "LICENSE.textile",
+     "README.textile",
+     "bin/edamame-nuke",
      "bin/edamame-ps",
      "bin/edamame-stats",
      "bin/edamame-sync",
@@ -30,6 +32,7 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "lib/edamame/broker.rb",
      "lib/edamame/job.rb",
      "lib/edamame/monitoring.rb",
+     "lib/edamame/monitoring/README-god.textile",
      "lib/edamame/monitoring/README-god.textile",
      "lib/edamame/monitoring/beanstalkd_god.rb",
      "lib/edamame/monitoring/god_email.rb",
