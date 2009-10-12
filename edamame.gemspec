@@ -14,42 +14,18 @@ Gem::Specification.new do |s|
 
 Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
   s.email = %q{flip@infochimps.org}
-  s.executables = ["edamame-nuke", "edamame-ps", "edamame-stats", "edamame-sync", "edamame_util_opts.rb", "test_run.rb"]
+  s.executables = ["edamame-nuke", "edamame-ps", "edamame-stats", "edamame-sync"]
   s.extra_rdoc_files = [
     "LICENSE.textile",
      "README.textile"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
-     "LICENSE.textile",
-     "README.textile",
-     "Rakefile",
-     "VERSION",
-     "app/edamame_san/config.ru",
-     "app/edamame_san/config.yml",
-     "app/edamame_san/config/.gitignore",
-     "app/edamame_san/edamame_san.rb",
-     "app/edamame_san/public/favicon.ico",
-     "app/edamame_san/public/images/edamame_logo.icns",
-     "app/edamame_san/public/images/edamame_logo.ico",
-     "app/edamame_san/public/images/edamame_logo.png",
-     "app/edamame_san/public/images/edamame_logo_2.icns",
-     "app/edamame_san/public/javascripts/application.js",
-     "app/edamame_san/public/javascripts/jquery/jquery-ui.js",
-     "app/edamame_san/public/javascripts/jquery/jquery.js",
-     "app/edamame_san/public/stylesheets/application.css",
-     "app/edamame_san/public/stylesheets/layout.css",
-     "app/edamame_san/views/layout.haml",
-     "app/edamame_san/views/load.haml",
-     "app/edamame_san/views/root.haml",
-     "bin/edamame-nuke",
+    "bin/edamame-nuke",
      "bin/edamame-ps",
      "bin/edamame-stats",
      "bin/edamame-sync",
      "bin/edamame_util_opts.rb",
      "bin/test_run.rb",
-     "edamame.gemspec",
      "lib/edamame.rb",
      "lib/edamame/broker.rb",
      "lib/edamame/job.rb",
