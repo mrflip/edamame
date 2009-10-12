@@ -38,15 +38,17 @@ p(heavy). Edamame includes a few nifty toys:
 * Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
 * The start of a lightweight web frontend in Sinatra.
 
+<notextile></div><div class="toggle"></notextile>
+
+h2. More info
+
 h3. Credits
 
-Philip (flip) Kromer (flip@infochimps.org) 
+{{ site.gemname }} was written by "Philip (flip) Kromer":http://mrflip.com (flip@infochimps.org / "@mrflip":http://twitter.com/mrflip) for the "infochimps project":http://infochimps.org
 
-<notextile><div class="toggle"></notextile>
+h3. Help!
 
-h2. Help!
-
-Send Edamame questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
+Send {{ site.gemname }} questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
 
 <notextile></div></notextile>
 
