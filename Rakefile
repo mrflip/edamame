@@ -11,8 +11,10 @@ begin
     gem.email       = "flip@infochimps.org"
     gem.homepage    = "http://github.com/mrflip/edamame"
     gem.authors     = ["Philip (flip) Kromer"]
-    # gem.add_development_dependency "rspec"
-    # gem.add_development_dependency "yard"
+    gem.add_dependency 'tokyotyrant'
+    gem.add_dependency 'wukong'
+    gem.add_dependency 'monkeyshines'
+    gem.add_dependency 'beanstalk-client'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -32,6 +34,7 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
 end
 
 task :spec => :check_dependencies
+task :default => :spec
 
 begin
   require 'reek/rake_task'
@@ -57,8 +60,6 @@ rescue LoadError
     abort "Roodi is not available. In order to run roodi, you must: sudo gem install roodi"
   end
 end
-
-task :default => :spec
 
 begin
   require 'yard'

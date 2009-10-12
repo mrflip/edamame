@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philip (flip) Kromer"]
-  s.date = %q{2009-10-11}
+  s.date = %q{2009-10-12}
   s.description = %q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. 
 
 Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
@@ -100,14 +100,20 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 0"])
-      s.add_development_dependency(%q<yard>, [">= 0"])
+      s.add_runtime_dependency(%q<tokyotyrant>, [">= 0"])
+      s.add_runtime_dependency(%q<wukong>, [">= 0"])
+      s.add_runtime_dependency(%q<monkeyshines>, [">= 0"])
+      s.add_runtime_dependency(%q<beanstalk-client>, [">= 0"])
     else
-      s.add_dependency(%q<rspec>, [">= 0"])
-      s.add_dependency(%q<yard>, [">= 0"])
+      s.add_dependency(%q<tokyotyrant>, [">= 0"])
+      s.add_dependency(%q<wukong>, [">= 0"])
+      s.add_dependency(%q<monkeyshines>, [">= 0"])
+      s.add_dependency(%q<beanstalk-client>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 0"])
-    s.add_dependency(%q<yard>, [">= 0"])
+    s.add_dependency(%q<tokyotyrant>, [">= 0"])
+    s.add_dependency(%q<wukong>, [">= 0"])
+    s.add_dependency(%q<monkeyshines>, [">= 0"])
+    s.add_dependency(%q<beanstalk-client>, [">= 0"])
   end
 end
