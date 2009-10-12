@@ -23,6 +23,10 @@ h2. Documentation
 
 The bulk of the documentation is at "http://mrflip.github.com/edamame":http://mrflip.github.com/edamame Go there instead.
 
+h2. Help!
+
+Send Edamame questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
+
 h2. Requirements and Installation
 
 h3. Get the Code
