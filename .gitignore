@@ -35,3 +35,4 @@ config/private.yaml
 *.so
 *.o
 doc
+.yardoc

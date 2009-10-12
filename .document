@@ -1,8 +1,5 @@
 README.textile
 LICENSE.textile
-features/**/*.feature
-app/**/*
-bin/*
+app/**/*.rb
 lib/**/*.rb
-spec/**/*
-utils/**/*
+utils/**/*.rb

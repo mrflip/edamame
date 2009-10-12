@@ -68,8 +68,6 @@ task :default => :spec
 begin
   require 'yard'
   YARD::Rake::YardocTask.new do |yard|
-    yard.files = %w[bin lib utils].map{|d| d+'/**/*.rb'}
-    p yard.files
   end
 rescue LoadError
   task :yardoc do
@@ -90,10 +88,8 @@ Rake::RDocTask.new do |rdoc|
     '-SHN',
     '-f', 'darkfish',  # use darkfish rdoc styler
   ]
-  p rdoc.options
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "edamame #{version}"
   #
-  rdoc.rdoc_files.include('*.textile*')
-  %w[bin lib utils].each{|d| rdoc.rdoc_files.include d+'/**/*.rb'}
+  File.open(File.dirname(__FILE__)+'/.document').each{|line| rdoc.rdoc_files.include(line.chomp) }
 end

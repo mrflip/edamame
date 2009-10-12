@@ -19,15 +19,6 @@ It includes a few nifty toys:
 * Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
 * The start of a lightweight web frontend in Sinatra.
 
-Hi,
-
-I've slapped together the beanstalk distributed priority queue (http://bit.ly/beanstalkd) and the Tokyo Tyrant lightweight database (http://bit.ly/ttyrant - http://bit.ly/ttyrantruby) to create a serviceable persistent distributed priority queue.
-
-If you're willing to accept its weaknesses, it gives you 
-* persistence
-* queryability and enumeration of jobs
-* named jobs
-
 h3. Design
 
 Jobs are persisted to a tokyo tyrant backing store. Beanstalkd 
@@ -75,7 +66,7 @@ For the tokyotyrant part, you'll need tokyocabinet, tokyotyrant and their corres
 
 h2. Why you should, or shouldn't, use Edamame
 
-**Beanstalkd**'s strengths:
+**Beanstalkd's** strengths:
 * fast 
 * loosely-ordered **priority queuing** (few others have this)
 * multiple queues (via 'tubes')
