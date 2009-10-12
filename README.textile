@@ -29,21 +29,27 @@ Send Edamame questions to the "Infinite Monkeywrench mailing list":http://groups
 
 h2. Requirements and Installation
 
-h3. Get the Code
+h2. Install
 
-We're still actively developing {{ site.gemname }}.  The newest version is available via "Git":http://git-scm.com on "github:":http://github.com/mrflip/{{ site.gemname }}
+** "Main Install and Setup Documentation":http://mrflip.github.com/edamame/INSTALL.html **
 
-pre. $ git clone git://github.com/mrflip/{{ site.gemname }}
+h3. Get the code
 
-A gem is available from "gemcutter:":http://gemcutter.org/gems/{{ site.gemname }}
+We're still actively developing edamame.  The newest version is available via "Git":http://git-scm.com on "github:":http://github.com/mrflip/edamame
 
-pre. $ sudo gem install {{ site.gemname }} --source=http://gemcutter.org
+pre. $ git clone git://github.com/mrflip/edamame
+
+A gem is available from "gemcutter:":http://gemcutter.org/gems/edamame
+
+pre. $ sudo gem install edamame --source=http://gemcutter.org
 
 (don't use the gems.github.com version -- it's way out of date.)
 
-You can instead download this project in either "zip":http://github.com/mrflip/{{ site.gemname }}/zipball/master or "tar":http://github.com/mrflip/{{ site.gemname }}/tarball/master formats.
+You can instead download this project in either "zip":http://github.com/mrflip/edamame/zipball/master or "tar":http://github.com/mrflip/edamame/tarball/master formats.
 
 h3. Get the Dependencies
+
+To finish setting up, see the "detailed setup instructions":http://mrflip.github.com/edamame/INSTALL.html and then read the "usage notes":http://mrflip.github.com/edamame/usage.html
 
 * "beanstalkd 1.3,":http://xph.us/dist/beanstalkd/ "libevent 1.4,":http://monkey.org/~provos/libevent/ and "beanstalk-client":http://github.com/dustin/beanstalk-client
 * "Tokyo Tyrant,":http://tokyocabinet.sourceforge.net/tyrantdoc/ "Tokyo Tyrant Ruby libs,":http://tokyocabinet.sourceforge.net/tyrantrubydoc/ "Tokyo Cabinet,":http://tokyocabinet.sourceforge.net and "Tokyo Cabinet Ruby libs":http://tokyocabinet.sourceforge.net/tyrantdoc/
@@ -88,3 +94,19 @@ There's a **fuller set of docs** at "http://mrflip.github.com/edamame":http://mr
 ** http://railscasts.com/episodes/130-monitoring-with-god
 ** Some code for the god conf is inspired by that railscast, "this pastie,":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew the "one from the god docs":http://god.rubyforge.org/, and "Configuring GMail notifiers in God":http://millarian.com/programming/ruby-on-rails/monitoring-thin-using-god-with-google-apps-notifications/
 ** Alternatives to God include (in order of complexity): "Monit,":http://mmonit.com/monit/ perhaps "with Munin;":http://www.howtoforge.com/server_monitoring_monit_munin "Cacti":http://www.cacti.net/ and "Hyperic":http://www.hyperic.com/
+
+---------------------------------------------------------------------------
+
+<notextile><div class="toggle"></notextile>
+
+h2. More info
+
+h3. Credits
+
+Edamame was written by "Philip (flip) Kromer":http://mrflip.com (flip@infochimps.org / "@mrflip":http://twitter.com/mrflip) for the "infochimps project":http://infochimps.org
+
+h3. Help!
+
+Send wuclan questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
+
+<notextile></div></notextile>
