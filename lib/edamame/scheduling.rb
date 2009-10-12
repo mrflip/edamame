@@ -1,5 +1,7 @@
 require 'wukong/extensions/hashlike_class'
 module Edamame
+  # sugar for rescheduled jobs
+  IMMEDIATELY = 0
 
   module Scheduling
     extend FactoryModule
