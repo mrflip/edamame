@@ -21,7 +21,7 @@ It includes a few nifty toys:
 
 h2. Documentation
 
-The bulk of the documentation is at "http://mrflip.github.com/edamame":http://mrflip.github.com/edamame
+The bulk of the documentation is at "http://mrflip.github.com/edamame":http://mrflip.github.com/edamame Go there instead.
 
 h2. Requirements and Installation
 
@@ -83,7 +83,4 @@ There's a **fuller set of docs** at "http://mrflip.github.com/edamame":http://mr
 * "God process monitoring framework":http://god.rubyforge.org/
 ** http://railscasts.com/episodes/130-monitoring-with-god
 ** Some code for the god conf is inspired by that railscast, "this pastie,":http://pastie.textmate.org/private/ovgxu2ihoicli2ktrwtbew the "one from the god docs":http://god.rubyforge.org/, and "Configuring GMail notifiers in God":http://millarian.com/programming/ruby-on-rails/monitoring-thin-using-god-with-google-apps-notifications/
-
 ** Alternatives to God include (in order of complexity): "Monit,":http://mmonit.com/monit/ perhaps "with Munin;":http://www.howtoforge.com/server_monitoring_monit_munin "Cacti":http://www.cacti.net/ and "Hyperic":http://www.hyperic.com/
-
-
