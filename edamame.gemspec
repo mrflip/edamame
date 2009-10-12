@@ -79,20 +79,17 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<tokyotyrant>, [">= 0"])
+      s.add_runtime_dependency(%q<beanstalk-client>, [">= 0"])
       s.add_runtime_dependency(%q<wukong>, [">= 0"])
       s.add_runtime_dependency(%q<monkeyshines>, [">= 0"])
-      s.add_runtime_dependency(%q<beanstalk-client>, [">= 0"])
     else
-      s.add_dependency(%q<tokyotyrant>, [">= 0"])
+      s.add_dependency(%q<beanstalk-client>, [">= 0"])
       s.add_dependency(%q<wukong>, [">= 0"])
       s.add_dependency(%q<monkeyshines>, [">= 0"])
-      s.add_dependency(%q<beanstalk-client>, [">= 0"])
     end
   else
-    s.add_dependency(%q<tokyotyrant>, [">= 0"])
+    s.add_dependency(%q<beanstalk-client>, [">= 0"])
     s.add_dependency(%q<wukong>, [">= 0"])
     s.add_dependency(%q<monkeyshines>, [">= 0"])
-    s.add_dependency(%q<beanstalk-client>, [">= 0"])
   end
 end
