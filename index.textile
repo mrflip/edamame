@@ -6,7 +6,6 @@ collapse: false
 
 h1(gemheader). {{ site.gemname }} %(small):: job queue%
 
-
 p. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue
 
 "Edamame":http://bit.ly/edamame combines the "Beanstalk priority queue":http://bit.ly/beanstalkd with a "Tokyo Tyrant database"::http://bit.ly/ttyrant and "God monitoring":http://bit.ly/godmonitor to produce a persistent distributed priority job queue system.
@@ -16,6 +15,8 @@ p. Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority jo
 * "Usage notes":usage.html
 * "Alternatives to Edamame, Beanstalk, Tokyo Tyrant or God":alternatives.html
 * "License":LICENSE.html
+
+Send Edamame questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
 
 <notextile><div class="toggle"></notextile>
 
@@ -37,9 +38,15 @@ p(heavy). Edamame includes a few nifty toys:
 * Command-line management scripts to load. enumerate, empty, and show stats for the db+queue
 * The start of a lightweight web frontend in Sinatra.
 
-h3. Authors
+h3. Credits
 
 Philip (flip) Kromer (flip@infochimps.org) 
+
+<notextile><div class="toggle"></notextile>
+
+h2. Help!
+
+Send Edamame questions to the "Infinite Monkeywrench mailing list":http://groups.google.com/group/infochimps-code
 
 <notextile></div></notextile>
 
