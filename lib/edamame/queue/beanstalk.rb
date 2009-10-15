@@ -109,14 +109,16 @@ module Edamame
         curr_watches = beanstalk.list_tubes_watched.values.first
         beanstalk.use   tube if tube
         beanstalk.watch tube if tube
-        p ["emptying", tube, current_jobs]
+        print "emptying\t%-23s\t%7d\t" % [tube, current_jobs]
         loop do
           kicked = beanstalk.open_connections.map{|conxn| conxn.kick(20) }
           break if (current_jobs == 0) || (!beanstalk.peek_ready)
           qjob = reserve(5) or break
           yield qjob
+          print '.'
           qjob.delete
         end
+        print "\n"
         beanstalk.use curr_tube
         beanstalk.ignore tube if (! curr_watches.include?(tube))
       end

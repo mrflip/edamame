@@ -16,6 +16,5 @@ pq = Edamame::PersistentQueue.new( :tube => CONFIG[:tube],
 periodic_log = Monkeyshines::Monitor::PeriodicLogger.new(:iters => 1, :time => 30)
 pq.load do |job|
   obj = job.obj rescue nil
-
   periodic_log.periodically{ [ pq.store.size, job.loggable, job.class, obj.inspect ] }
 end

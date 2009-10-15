@@ -47,6 +47,12 @@ class TyrantGod < GodProcess
     File.join(options[:db_dirname], basename)
   end
 
+  # create any directories required by the process
+  def mkdirs!
+    super
+    FileUtils.mkdir_p File.dirname(dbname)
+  end
+
   def start_command
     [
       options[:server_exe],
