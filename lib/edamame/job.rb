@@ -78,7 +78,7 @@ module Edamame
 
     # Fields suitable for emission as a log line.
     def loggable
-      "%-15s\t%7d\t%7.2f\t%-23s" % [tube, priority, delay, key]
+      "%-15s\t%7d\t%7.2f\t%-23s" % [tube, priority.to_i, delay.to_f, key]
     end
 
     def to_hash flatten=true
