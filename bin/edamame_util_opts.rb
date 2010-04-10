@@ -4,7 +4,7 @@ CONFIG = Trollop::options do
   opt :store,  'host:port for the backing store',    :type => String, :required => true
   opt :handle, 'label for this scrape',              :type => String, :required => true
 end
-CONFIG[:store].gsub!(/^localhost:/, ':') # queue must *not* have localhost:
+CONFIG[:store].gsub!(/^localhost:/, ':') # store must *not* have localhost:
 CONFIG[:queue].gsub!(/^:/, 'localhost:') # queue must have localhost:
 CONFIG[:tube] = (CONFIG[:handle] || 'default').gsub(/[^A-Z0-9a-z\-]+/,'')
 
