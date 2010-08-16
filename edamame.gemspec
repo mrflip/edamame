@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philip (flip) Kromer"]
-  s.date = %q{2010-04-13}
+  s.date = %q{2010-08-16}
   s.description = %q{Edamame combines the Beanstalk priority queue with a Tokyo Tyrant database and God monitoring to produce a persistent distributed priority job queue system. 
 
 Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable scheduling; it adds persistence, named jobs and job querying/enumeration. }
@@ -48,13 +48,6 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
      "lib/edamame/broker.rb",
      "lib/edamame/job.rb",
      "lib/edamame/monitoring.rb",
-     "lib/edamame/monitoring/README-god.textile",
-     "lib/edamame/monitoring/beanstalkd_god.rb",
-     "lib/edamame/monitoring/god_email.rb",
-     "lib/edamame/monitoring/god_process.rb",
-     "lib/edamame/monitoring/process_groups.rb",
-     "lib/edamame/monitoring/sinatra_god.rb",
-     "lib/edamame/monitoring/tyrant_god.rb",
      "lib/edamame/persistent_queue.rb",
      "lib/edamame/queue.rb",
      "lib/edamame/queue/beanstalk.rb",
@@ -82,18 +75,18 @@ Like beanstalk, it is fast, lightweight, distributed, priority queuing, reliable
   s.homepage = %q{http://github.com/mrflip/edamame}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Beanstalk + Tokyo Tyrant = Edamame, a fast persistent distributed priority job queue.}
   s.test_files = [
-    "spec/edamame_spec.rb",
-     "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+     "spec/edamame_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<beanstalk-client>, [">= 0"])
       s.add_runtime_dependency(%q<wukong>, [">= 0"])
       s.add_runtime_dependency(%q<monkeyshines>, [">= 0"])
